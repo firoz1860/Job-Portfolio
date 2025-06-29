@@ -1,34 +1,88 @@
-
-
-
-import React, { useState, useEffect } from 'react';
-import { Mail, Phone, MapPin, Code, Database, Globe, Cpu, Zap, GitBranch, Award, Calendar } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Code,
+  Database,
+  Globe,
+  Cpu,
+  Zap,
+  GitBranch,
+  Award,
+  Calendar,
+} from "lucide-react";
 
 const About = () => {
   const [flipped, setFlipped] = useState(false);
   const [activeSkill, setActiveSkill] = useState(null);
 
   const skills = [
-    { name: 'HTML/CSS/JS', icon: <Globe className="w-4 h-4 sm:w-5 sm:h-5" />, color: 'from-orange-500 to-red-500', level: 90 },
-    { name: 'Node.js', icon: <Cpu className="w-4 h-4 sm:w-5 sm:h-5" />, color: 'from-green-500 to-emerald-500', level: 85 },
-    { name: 'ReactJS', icon: <Code className="w-4 h-4 sm:w-5 sm:h-5" />, color: 'from-blue-500 to-cyan-500', level: 95 },
-    { name: 'MongoDB', icon: <Database className="w-4 h-4 sm:w-5 sm:h-5" />, color: 'from-green-600 to-lime-500', level: 80 },
-    { name: 'TypeScript', icon: <Code className="w-4 h-4 sm:w-5 sm:h-5" />, color: 'from-blue-600 to-indigo-500', level: 75 },
-    { name: 'NextJS', icon: <Zap className="w-4 h-4 sm:w-5 sm:h-5" />, color: 'from-gray-700 to-gray-900', level: 88 },
-    { name: 'ExpressJS', icon: <Globe className="w-4 h-4 sm:w-5 sm:h-5" />, color: 'from-yellow-500 to-amber-500', level: 85 },
-    { name: 'GIT', icon: <GitBranch className="w-4 h-4 sm:w-5 sm:h-5" />, color: 'from-purple-500 to-pink-500', level: 90 },
+    {
+      name: "HTML/CSS/JS",
+      icon: <Globe className="w-4 h-4 sm:w-5 sm:h-5" />,
+      color: "from-orange-500 to-red-500",
+      level: 90,
+    },
+    {
+      name: "Node.js",
+      icon: <Cpu className="w-4 h-4 sm:w-5 sm:h-5" />,
+      color: "from-green-500 to-emerald-500",
+      level: 85,
+    },
+    {
+      name: "ReactJS",
+      icon: <Code className="w-4 h-4 sm:w-5 sm:h-5" />,
+      color: "from-blue-500 to-cyan-500",
+      level: 95,
+    },
+    {
+      name: "MongoDB",
+      icon: <Database className="w-4 h-4 sm:w-5 sm:h-5" />,
+      color: "from-green-600 to-lime-500",
+      level: 80,
+    },
+    {
+      name: "TypeScript",
+      icon: <Code className="w-4 h-4 sm:w-5 sm:h-5" />,
+      color: "from-blue-600 to-indigo-500",
+      level: 75,
+    },
+    {
+      name: "NextJS",
+      icon: <Zap className="w-4 h-4 sm:w-5 sm:h-5" />,
+      color: "from-gray-700 to-gray-900",
+      level: 88,
+    },
+    {
+      name: "ExpressJS",
+      icon: <Globe className="w-4 h-4 sm:w-5 sm:h-5" />,
+      color: "from-yellow-500 to-amber-500",
+      level: 85,
+    },
+    {
+      name: "GIT",
+      icon: <GitBranch className="w-4 h-4 sm:w-5 sm:h-5" />,
+      color: "from-purple-500 to-pink-500",
+      level: 90,
+    },
   ];
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveSkill(prev => prev === null ? 0 : (prev + 1) % skills.length);
+      setActiveSkill((prev) =>
+        prev === null ? 0 : (prev + 1) % skills.length
+      );
     }, 3000);
 
     return () => clearInterval(interval);
   }, [skills.length]);
 
   return (
-    <section id="about" className="min-h-screen py-12 sm:py-16 md:py-20 bg-gradient-to-br from-gray-900 via-purple-900/50 to-gray-900 relative overflow-hidden">
+    <section
+      id="about"
+      className="min-h-screen py-12 sm:py-16 md:py-20 bg-gradient-to-br from-gray-900 via-purple-900/50 to-gray-900 relative overflow-hidden"
+    >
       {/* Enhanced Background Effects */}
       <div className="absolute inset-0 opacity-20 sm:opacity-30">
         <div className="absolute top-5 left-5 sm:top-10 sm:left-10 w-48 h-48 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-2xl sm:blur-3xl animate-pulse"></div>
@@ -53,20 +107,21 @@ const About = () => {
             <div className="absolute -inset-2 sm:-inset-4 bg-gradient-to-r from-purple-600 to-cyan-600 rounded-lg blur opacity-20 animate-pulse"></div>
           </h2>
           <p className="text-gray-300 text-base sm:text-lg md:text-xl max-w-xl sm:max-w-2xl md:max-w-3xl mx-auto leading-relaxed px-4">
-            Crafting digital experiences with passion, precision, and cutting-edge technology
+            Crafting digital experiences with passion, precision, and
+            cutting-edge technology
           </p>
         </div>
 
         <div className="flex flex-col xl:flex-row gap-6 sm:gap-8 md:gap-12 items-start">
           {/* Main Profile Card */}
           <div className="flex-1 max-w-full sm:max-w-2xl md:max-w-3xl lg:max-w-4xl mx-auto xl:mx-0">
-            <div 
+            <div
               className="relative w-full h-[500px] sm:h-[600px] md:h-[650px] lg:h-[700px] perspective-1000 cursor-pointer group"
               onClick={() => setFlipped(!flipped)}
             >
-              <div 
+              <div
                 className={`relative w-full h-full transition-all duration-1000 ease-in-out transform-style-preserve-3d ${
-                  flipped ? 'rotate-y-180' : ''
+                  flipped ? "rotate-y-180" : ""
                 }`}
               >
                 {/* Front Side - Enhanced Code Style */}
@@ -77,53 +132,122 @@ const About = () => {
                       <div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full"></div>
                       <div className="w-2 h-2 sm:w-3 sm:h-3 bg-yellow-500 rounded-full"></div>
                       <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full"></div>
-                      <span className="ml-2 sm:ml-4 text-gray-400 font-mono text-xs sm:text-sm">developer.js</span>
+                      <span className="ml-2 sm:ml-4 text-gray-400 font-mono text-xs sm:text-sm">
+                        developer.js
+                      </span>
+                    </div>
+                    <div className="relative w-full max-w-full overflow-auto rounded-lg bg-gray-900 p-4 sm:p-6 border border-gray-700 shadow-inner">
+                      <pre className="text-xs sm:text-sm md:text-base font-mono text-gray-100 leading-relaxed whitespace-pre-wrap break-words">
+                        <code>
+                          <span className="text-purple-400">class</span>{" "}
+                          <span className="text-cyan-400">Developer</span>{" "}
+                          <span className="text-white">&#123;</span>
+                          {"\n  "}
+                          <span className="text-purple-400">
+                            constructor
+                          </span>() <span className="text-white">&#123;</span>
+                          {"\n    "}
+                          <span className="text-blue-300">this</span>.name ={" "}
+                          <span className="text-green-400">"Firoz Ahmad"</span>;
+                          {"\n    "}
+                          <span className="text-blue-300">this</span>.role ={" "}
+                          <span className="text-green-400">
+                            "Full Stack Developer"
+                          </span>
+                          ;{"\n    "}
+                          <span className="text-blue-300">this</span>.location ={" "}
+                          <span className="text-green-400">"Delhi, India"</span>
+                          ;{"\n  "}
+                          <span className="text-white">&#125;</span>
+                          {"\n\n  "}
+                          <span className="text-purple-400">
+                            getContact
+                          </span>() <span className="text-white">&#123;</span>
+                          {"\n    "}
+                          <span className="text-yellow-300">return</span>{" "}
+                          <span className="text-white">&#123;</span>
+                          {"\n      "}email:{" "}
+                          <span className="text-green-400">
+                            "firozahmed709p@gmail.com"
+                          </span>
+                          ,{"\n      "}phone:{" "}
+                          <span className="text-green-400">
+                            "+91 9315742128"
+                          </span>
+                          ,{"\n      "}linkedin:{" "}
+                          <span className="text-green-400">
+                            "linkedin.com/in/firoz-ahmad"
+                          </span>
+                          {"\n    "}
+                          <span className="text-white">&#125;;</span>
+                          {"\n  "}
+                          <span className="text-white">&#125;</span>
+                          {"\n\n  "}
+                          <span className="text-purple-400">getEducation</span>
+                          () <span className="text-white">&#123;</span>
+                          {"\n    "}
+                          <span className="text-yellow-300">return</span>{" "}
+                          <span className="text-white">&#123;</span>
+                          {"\n      "}degree:{" "}
+                          <span className="text-green-400">
+                            "B.Tech Electrical Engineering"
+                          </span>
+                          ,{"\n      "}university:{" "}
+                          <span className="text-green-400">
+                            "Delhi Technological University"
+                          </span>
+                          ,{"\n      "}period:{" "}
+                          <span className="text-cyan-400">"2022 - 2026"</span>,
+                          {"\n      "}cgpa:{" "}
+                          <span className="text-cyan-400">
+                            "7.5 upto 6th semester"
+                          </span>
+                          {"\n    "}
+                          <span className="text-white">&#125;;</span>
+                          {"\n  "}
+                          <span className="text-white">&#125;</span>
+                          {"\n\n  "}
+                          <span className="text-purple-400">
+                            getSpecialties
+                          </span>
+                          () <span className="text-white">&#123;</span>
+                          {"\n    "}
+                          <span className="text-yellow-300">return</span> [
+                          {"\n      "}
+                          <span className="text-green-400">
+                            "MERN Stack Development"
+                          </span>
+                          ,{"\n      "}
+                          <span className="text-green-400">
+                            "RESTful API Design"
+                          </span>
+                          ,{"\n    "}];
+                          {"\n  "}
+                          <span className="text-white">&#125;</span>
+                          {"\n\n  "}
+                          <span className="text-purple-400">
+                            getCurrentFocus
+                          </span>
+                          () <span className="text-white">&#123;</span>
+                          {"\n    "}
+                          <span className="text-yellow-300">return</span>{" "}
+                          <span className="text-green-400">
+                            "Building scalable web applications"
+                          </span>
+                          ;{"\n  "}
+                          <span className="text-white">&#125;</span>
+                          {"\n"}
+                          <span className="text-white">&#125;</span>
+                        </code>
+                      </pre>
                     </div>
 
-                    <pre className="text-xs sm:text-sm md:text-base font-mono leading-relaxed text-gray-100 overflow-x-auto">
-                      <code>
-                        <span className="text-purple-400">class</span> <span className="text-cyan-400">Developer</span> <span className="text-white">&#123;</span>
-                        {'\n  '}<span className="text-purple-400">constructor</span>() <span className="text-white">&#123;</span>
-                        {'\n    '}<span className="text-blue-300">this</span>.name = <span className="text-green-400">"Firoz Ahmad"</span>;
-                        {'\n    '}<span className="text-blue-300">this</span>.role = <span className="text-green-400">"Full Stack Developer"</span>;
-                        {'\n    '}<span className="text-blue-300">this</span>.location = <span className="text-green-400">"Delhi, India"</span>;
-                        {'\n  '}<span className="text-white">&#125;</span>
-                        
-                        {'\n\n  '}<span className="text-purple-400">getContact</span>() <span className="text-white">&#123;</span>
-                        {'\n    '}<span className="text-yellow-300">return</span> <span className="text-white">&#123;</span>
-                        {'\n      '}email: <span className="text-green-400">"firozahmed709p@gmail.com"</span>,
-                        {'\n      '}phone: <span className="text-green-400">"+91 9315742128"</span>,
-                        {'\n      '}linkedin: <span className="text-green-400">"linkedin.com/in/firoz-ahmad"</span>
-                        {'\n    '}<span className="text-white">&#125;;</span>
-                        {'\n  '}<span className="text-white">&#125;</span>
-
-                        {'\n\n  '}<span className="text-purple-400">getEducation</span>() <span className="text-white">&#123;</span>
-                        {'\n    '}<span className="text-yellow-300">return</span> <span className="text-white">&#123;</span>
-                        {'\n      '}degree: <span className="text-green-400">"B.Tech Electrical Engineering"</span>,
-                        {'\n      '}university: <span className="text-green-400">"Delhi Technological University"</span>,
-                        {'\n      '}period: <span className="text-cyan-400">"2022 - 2026"</span>,
-                        {'\n      '}cgpa: <span className="text-cyan-400">7.5 upto 6th semester</span>
-                        {'\n    '}<span className="text-white">&#125;;</span>
-                        {'\n  '}<span className="text-white">&#125;</span>
-
-                        {'\n\n  '}<span className="text-purple-400">getSpecialties</span>() <span className="text-white">&#123;</span>
-                        {'\n    '}<span className="text-yellow-300">return</span> [
-                        {'\n      '}<span className="text-green-400">"MERN Stack Development"</span>,
-                        {'\n      '}<span className="text-green-400">"RESTful API Design"</span>,
-                        {'\n    '}];
-                        {'\n  '}<span className="text-white">&#125;</span>
-
-                        {'\n\n  '}<span className="text-purple-400">getCurrentFocus</span>() <span className="text-white">&#123;</span>
-                        {'\n    '}<span className="text-yellow-300">return</span> <span className="text-green-400">"Building scalable web applications"</span>;
-                        {'\n  '}<span className="text-white">&#125;</span>
-                        {'\n'}<span className="text-white">&#125;</span>
-                      </code>
-                    </pre>
-                    
                     <div className="mt-4 sm:mt-6 md:mt-8 text-center">
                       <div className="inline-flex items-center space-x-2 px-3 sm:px-4 py-2 bg-purple-500/20 rounded-full border border-purple-500/30">
                         <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-purple-400 rounded-full animate-pulse"></div>
-                        <p className="text-gray-400 text-xs sm:text-sm">Click to explore skills</p>
+                        <p className="text-gray-400 text-xs sm:text-sm">
+                          Click to explore skills
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -133,16 +257,24 @@ const About = () => {
                 <div className="absolute inset-0 backface-hidden rotate-y-180">
                   <div className="bg-gray-800/95 backdrop-blur-sm p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-cyan-500/30 shadow-2xl h-full overflow-auto">
                     <div className="text-center mb-6 sm:mb-8">
-                      <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-cyan-400 mb-2">Technical Arsenal</h3>
-                      <p className="text-gray-400 text-sm sm:text-base">Technologies I work with</p>
+                      <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-cyan-400 mb-2">
+                        Technical Arsenal
+                      </h3>
+                      <p className="text-gray-400 text-sm sm:text-base">
+                        Technologies I work with
+                      </p>
                     </div>
-                    
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6 mb-6 sm:mb-8">
                       {skills.map((skill, index) => (
                         <div
                           key={skill.name}
-                          className={`relative p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl bg-gradient-to-r ${skill.color} text-white transform hover:scale-105 transition-all duration-500 shadow-lg hover:shadow-2xl cursor-pointer group ${
-                            activeSkill === index ? 'ring-2 sm:ring-4 ring-white/50 scale-105' : ''
+                          className={`relative p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl bg-gradient-to-r ${
+                            skill.color
+                          } text-white transform hover:scale-105 transition-all duration-500 shadow-lg hover:shadow-2xl cursor-pointer group ${
+                            activeSkill === index
+                              ? "ring-2 sm:ring-4 ring-white/50 scale-105"
+                              : ""
                           }`}
                           style={{ animationDelay: `${index * 150}ms` }}
                           onMouseEnter={() => setActiveSkill(index)}
@@ -152,32 +284,42 @@ const About = () => {
                               <div className="bg-white/20 p-2 sm:p-3 rounded-lg sm:rounded-xl group-hover:bg-white/30 transition-colors duration-300">
                                 {skill.icon}
                               </div>
-                              <span className="font-bold text-sm sm:text-base md:text-lg">{skill.name}</span>
+                              <span className="font-bold text-sm sm:text-base md:text-lg">
+                                {skill.name}
+                              </span>
                             </div>
-                            <span className="text-lg sm:text-xl md:text-2xl font-bold">{skill.level}%</span>
+                            <span className="text-lg sm:text-xl md:text-2xl font-bold">
+                              {skill.level}%
+                            </span>
                           </div>
-                          
+
                           {/* Skill Progress Bar */}
                           <div className="w-full bg-white/20 rounded-full h-1.5 sm:h-2 overflow-hidden">
-                            <div 
+                            <div
                               className="h-full bg-white/80 rounded-full transition-all duration-1000 ease-out"
-                              style={{ 
-                                width: activeSkill === index ? `${skill.level}%` : '0%',
-                                transitionDelay: activeSkill === index ? '200ms' : '0ms'
+                              style={{
+                                width:
+                                  activeSkill === index
+                                    ? `${skill.level}%`
+                                    : "0%",
+                                transitionDelay:
+                                  activeSkill === index ? "200ms" : "0ms",
                               }}
                             ></div>
                           </div>
-                          
+
                           {/* Hover Effect */}
                           <div className="absolute inset-0 bg-white/10 rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </div>
                       ))}
                     </div>
-                    
+
                     <div className="text-center">
                       <div className="inline-flex items-center space-x-2 px-3 sm:px-4 py-2 bg-cyan-500/20 rounded-full border border-cyan-500/30">
                         <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-cyan-400 rounded-full animate-pulse"></div>
-                        <p className="text-gray-400 text-xs sm:text-sm">Click to return to profile</p>
+                        <p className="text-gray-400 text-xs sm:text-sm">
+                          Click to return to profile
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -198,7 +340,9 @@ const About = () => {
                 <div className="space-y-3 sm:space-y-4 text-gray-300">
                   <div className="flex items-center space-x-2 sm:space-x-3 hover:text-cyan-400 transition-colors duration-200 group/item">
                     <Mail className="w-3 h-3 sm:w-4 sm:h-4 group-hover/item:scale-110 transition-transform duration-200 flex-shrink-0" />
-                    <span className="text-xs sm:text-sm break-all">firozahmed709p@gmail.com</span>
+                    <span className="text-xs sm:text-sm break-all">
+                      firozahmed709p@gmail.com
+                    </span>
                   </div>
                   <div className="flex items-center space-x-2 sm:space-x-3 hover:text-cyan-400 transition-colors duration-200 group/item">
                     <Phone className="w-3 h-3 sm:w-4 sm:h-4 group-hover/item:scale-110 transition-transform duration-200 flex-shrink-0" />
@@ -220,20 +364,32 @@ const About = () => {
                 </h3>
                 <div className="grid grid-cols-2 gap-3 sm:gap-4 text-center">
                   <div className="bg-purple-500/20 p-3 sm:p-4 rounded-lg sm:rounded-xl hover:bg-purple-500/30 transition-colors duration-300">
-                    <div className="text-xl sm:text-2xl md:text-3xl font-bold text-purple-400">8+</div>
-                    <div className="text-xs text-gray-400 mt-1">Technologies</div>
+                    <div className="text-xl sm:text-2xl md:text-3xl font-bold text-purple-400">
+                      8+
+                    </div>
+                    <div className="text-xs text-gray-400 mt-1">
+                      Technologies
+                    </div>
                   </div>
                   <div className="bg-cyan-500/20 p-3 sm:p-4 rounded-lg sm:rounded-xl hover:bg-cyan-500/30 transition-colors duration-300">
-                    <div className="text-xl sm:text-2xl md:text-3xl font-bold text-cyan-400">2026</div>
+                    <div className="text-xl sm:text-2xl md:text-3xl font-bold text-cyan-400">
+                      2026
+                    </div>
                     <div className="text-xs text-gray-400 mt-1">Graduation</div>
                   </div>
                   <div className="bg-green-500/20 p-3 sm:p-4 rounded-lg sm:rounded-xl hover:bg-green-500/30 transition-colors duration-300">
-                    <div className="text-xl sm:text-2xl md:text-3xl font-bold text-green-400">15+</div>
+                    <div className="text-xl sm:text-2xl md:text-3xl font-bold text-green-400">
+                      15+
+                    </div>
                     <div className="text-xs text-gray-400 mt-1">Projects</div>
                   </div>
                   <div className="bg-pink-500/20 p-3 sm:p-4 rounded-lg sm:rounded-xl hover:bg-pink-500/30 transition-colors duration-300">
-                    <div className="text-xl sm:text-2xl md:text-3xl font-bold text-pink-400">2+</div>
-                    <div className="text-xs text-gray-400 mt-1">Years Coding</div>
+                    <div className="text-xl sm:text-2xl md:text-3xl font-bold text-pink-400">
+                      2+
+                    </div>
+                    <div className="text-xs text-gray-400 mt-1">
+                      Years Coding
+                    </div>
                   </div>
                 </div>
               </div>
@@ -247,15 +403,21 @@ const About = () => {
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2">
                     <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-purple-400 rounded-full animate-pulse flex-shrink-0"></div>
-                    <span className="text-gray-300 text-xs sm:text-sm">Advanced React Patterns</span>
+                    <span className="text-gray-300 text-xs sm:text-sm">
+                      Advanced React Patterns
+                    </span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-cyan-400 rounded-full animate-pulse animation-delay-500 flex-shrink-0"></div>
-                    <span className="text-gray-300 text-xs sm:text-sm">GraphQL & Apollo</span>
+                    <span className="text-gray-300 text-xs sm:text-sm">
+                      GraphQL & Apollo
+                    </span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-pink-400 rounded-full animate-pulse animation-delay-1000 flex-shrink-0"></div>
-                    <span className="text-gray-300 text-xs sm:text-sm">Cloud Architecture</span>
+                    <span className="text-gray-300 text-xs sm:text-sm">
+                      Cloud Architecture
+                    </span>
                   </div>
                 </div>
               </div>
@@ -296,8 +458,13 @@ const About = () => {
           animation: bounce 3s infinite;
         }
         @keyframes gradient-x {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
+          0%,
+          100% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
         }
         .animate-gradient-x {
           background-size: 200% 200%;
@@ -370,11 +537,11 @@ export default About;
 //         <div className="flex flex-col lg:flex-row gap-12 items-center">
 //           {/* Profile Card */}
 //           <div className="flex-1 max-w-2xl">
-//             <div 
+//             <div
 //               className="relative w-full h-[600px] perspective-1000 cursor-pointer group"
 //               onClick={() => setFlipped(!flipped)}
 //             >
-//               <div 
+//               <div
 //                 className={`relative w-full h-full transition-all duration-700 ease-in-out transform-style-preserve-3d ${
 //                   flipped ? 'rotate-y-180' : ''
 //                 }`}
@@ -390,7 +557,7 @@ export default About;
 //                         {'\n    '}<span className="text-blue-300">this</span>.role = <span className="text-green-400">"Full Stack Developer"</span>;
 //                         {'\n    '}<span className="text-blue-300">this</span>.location = <span className="text-green-400">"Delhi, India"</span>;
 //                         {'\n  '}<span className="text-white">&#125;</span>
-                        
+
 //                         {'\n\n  '}<span className="text-purple-400">contact</span>() <span className="text-white">&#123;</span>
 //                         {'\n    '}<span className="text-yellow-300">return</span> <span className="text-white">&#123;</span>
 //                         {'\n      '}email: <span className="text-green-400">"firozahmed709p@gmail.com"</span>,
@@ -412,7 +579,7 @@ export default About;
 //                         {'\n'}<span className="text-white">&#125;</span>
 //                       </code>
 //                     </pre>
-                    
+
 //                     <div className="mt-6 text-center">
 //                       <p className="text-gray-400 text-sm">Click to see skills →</p>
 //                     </div>
@@ -439,7 +606,7 @@ export default About;
 //                         </div>
 //                       ))}
 //                     </div>
-                    
+
 //                     <div className="mt-8 text-center">
 //                       <p className="text-gray-400 text-sm">Click to see profile →</p>
 //                     </div>
@@ -524,7 +691,6 @@ export default About;
 
 // export default About;
 
-
 // // src/components/About.js
 // import React, { useState } from 'react';
 // import { motion } from 'framer-motion';
@@ -534,7 +700,7 @@ export default About;
 
 //   return (
 //     <section id="about" className="py-16 bg-gradient-to-b from-gray-950 to-gray-900 text-white overflow-hidden min-h-screen">
-//       <motion.h2 
+//       <motion.h2
 //         className="text-3xl font-bold text-purple-500 mb-6 text-left pl-4"
 //         initial={{ opacity: 0, y: -20 }}
 //         animate={{ opacity: 1, y: 0 }}
@@ -543,7 +709,7 @@ export default About;
 //         &lt; About /&gt;
 //       </motion.h2>
 
-//       <motion.div 
+//       <motion.div
 //         className="mt-6 text-sm flex justify-center"
 //         initial={{ opacity: 0 }}
 //         whileInView={{ opacity: 1 }}
