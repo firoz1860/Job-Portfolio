@@ -1,7 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import { ExternalLink, Github, Eye, Star, GitFork, Calendar, Code2, Users } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import {
+  ExternalLink,
+  Github,
+  Eye,
+  Star,
+  GitFork,
+  Calendar,
+  Code2,
+  Users,
+} from "lucide-react";
 
 const projects = [
   {
@@ -15,7 +24,7 @@ const projects = [
     featured: true,
     stats: { stars: 15, forks: 8, views: 230 },
     year: "2024",
-    status: "Completed"
+    status: "Completed",
   },
   {
     title: "NewsApp",
@@ -28,7 +37,7 @@ const projects = [
     featured: false,
     stats: { stars: 12, forks: 5, views: 180 },
     year: "2023",
-    status: "Completed"
+    status: "Completed",
   },
   {
     title: "Apollo247",
@@ -41,7 +50,7 @@ const projects = [
     featured: true,
     stats: { stars: 20, forks: 12, views: 350 },
     year: "2024",
-    status: "Live"
+    status: "Live",
   },
   {
     title: "3D Portfolio",
@@ -54,7 +63,7 @@ const projects = [
     featured: true,
     stats: { stars: 25, forks: 10, views: 420 },
     year: "2024",
-    status: "Live"
+    status: "Live",
   },
   {
     title: "YouTube Backend",
@@ -66,8 +75,45 @@ const projects = [
     category: "backend",
     featured: false,
     stats: { stars: 18, forks: 7, views: 290 },
-    year: "2023",
-    status: "Completed"
+    year: "2024",
+    status: "Completed",
+  },
+  {
+    title: "Ecommerce Backend",
+    desc: "Built a robust and scalable e-commerce backend using Node.js and Express.js for the server framework, MongoDB with Mongoose for flexible and efficient database management, and JWT for secure authentication. Integrated Cloudinary for media storage and Stripe for seamless payment processing. Utilized Multer for file handling, Nodemailer for order and verification emails, and implemented role-based access control for admin and users. Added rate limiting, helmet, and CORS for enhanced security and performance. The API is fully modular, RESTful, and designed to support both web and mobile frontends.",
+    link: "https://github.com/firoz1860/ecommerce-backend",
+    demo: "#",
+    image: "https://images.pexels.com/photos/4348401/pexels-photo-4348401.jpeg",
+    tech: [
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "JWT",
+      "Stripe",
+      "Cloudinary",
+      "Multer",
+      "Nodemailer",
+      "CORS",
+      "Redis",
+      "Tailwind CSS for styling",
+
+      "Framer Motion for animations",
+
+      "React Router DOM for navigation",
+
+      "Axios for API calls.",
+
+      "React Hook Form + Zod/Yup for form validation",
+
+      "React Toastify for alerts",
+
+      "Socket.io-client for real-time updates",
+    ],
+    category: "backend",
+    featured: false,
+    stats: { stars: 18, forks: 7, views: 290 },
+    year: "2025",
+    status: "Completed",
   },
   {
     title: "Job-finder",
@@ -75,12 +121,21 @@ const projects = [
     link: "https://github.com/firoz1860/job-finder",
     demo: "#",
     image: "/job.png",
-    tech: ["React", "Node.js", "MongoDB", "Express", "Tailwind CSS", "Axios", "HTML", "CSS"],
+    tech: [
+      "React",
+      "Node.js",
+      "MongoDB",
+      "Express",
+      "Tailwind CSS",
+      "Axios",
+      "HTML",
+      "CSS",
+    ],
     category: "fullstack",
     featured: false,
     stats: { stars: 18, forks: 7, views: 290 },
     year: "2023",
-    status: "Completed"
+    status: "Completed",
   },
 ];
 
@@ -109,17 +164,19 @@ const ProjectCard = ({ project, index }) => {
       data-aos="fade-up"
       data-aos-duration="600"
       data-aos-delay={index * 100}
-      className={`project-card-container ${project.featured ? 'lg:col-span-2' : ''}`}
+      className={`project-card-container ${
+        project.featured ? "lg:col-span-2" : ""
+      }`}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div className={`project-card ${isHovered ? 'hovered' : ''}`}>
+      <div className={`project-card ${isHovered ? "hovered" : ""}`}>
         {/* Glassmorphic Background Overlay */}
         <div className="glass-overlay" />
-        
+
         {/* Dynamic Light Effect */}
-        <div 
+        <div
           className="light-effect"
           style={{
             background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(139, 92, 246, 0.15), transparent 40%)`,
@@ -128,18 +185,23 @@ const ProjectCard = ({ project, index }) => {
 
         {/* Project Image */}
         <div className="image-container">
-          <img 
-            src={project.image} 
-            alt={project.title} 
+          <img
+            src={project.image}
+            alt={project.title}
             className="project-image"
             onError={(e) => {
-              e.target.src = "https://images.pexels.com/photos/4348401/pexels-photo-4348401.jpeg";
+              e.target.src =
+                "https://images.pexels.com/photos/4348401/pexels-photo-4348401.jpeg";
             }}
           />
           <div className="image-overlay" />
-          
+
           {/* Status Badge */}
-          <div className={`status-badge ${project.status === 'Live' ? 'live' : 'completed'}`}>
+          <div
+            className={`status-badge ${
+              project.status === "Live" ? "live" : "completed"
+            }`}
+          >
             <div className="status-dot" />
             {project.status}
           </div>
@@ -169,7 +231,7 @@ const ProjectCard = ({ project, index }) => {
           </div>
 
           {/* Hover Action Buttons */}
-          <div className={`action-buttons ${isHovered ? 'visible' : ''}`}>
+          <div className={`action-buttons ${isHovered ? "visible" : ""}`}>
             <a
               href={project.link}
               target="_blank"
@@ -213,7 +275,7 @@ const ProjectCard = ({ project, index }) => {
               </div>
             </div>
           </div>
-          
+
           {/* Description */}
           <p className="project-description">{project.desc}</p>
 
@@ -232,9 +294,10 @@ const ProjectCard = ({ project, index }) => {
           {/* Footer */}
           <div className="content-footer">
             <div className={`category-tag ${project.category}`}>
-              {project.category.charAt(0).toUpperCase() + project.category.slice(1)}
+              {project.category.charAt(0).toUpperCase() +
+                project.category.slice(1)}
             </div>
-            
+
             <div className="action-links">
               <a
                 href={project.link}
@@ -262,7 +325,7 @@ const ProjectCard = ({ project, index }) => {
 
         {/* Animated Border */}
         <div className="animated-border" />
-        
+
         {/* Hover Glow Effect */}
         <div className="hover-glow" />
       </div>
@@ -271,30 +334,44 @@ const ProjectCard = ({ project, index }) => {
 };
 
 const Projects = () => {
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState("all");
   const [filteredProjects, setFilteredProjects] = useState(projects);
 
   useEffect(() => {
-    AOS.init({ 
+    AOS.init({
       once: true,
       duration: 600,
-      easing: 'ease-out-cubic'
+      easing: "ease-out-cubic",
     });
   }, []);
 
   useEffect(() => {
-    if (filter === 'all') {
+    if (filter === "all") {
       setFilteredProjects(projects);
     } else {
-      setFilteredProjects(projects.filter(project => project.category === filter));
+      setFilteredProjects(
+        projects.filter((project) => project.category === filter)
+      );
     }
   }, [filter]);
 
   const filters = [
-    { key: 'all', label: 'All Projects', count: projects.length },
-    { key: 'fullstack', label: 'Full Stack', count: projects.filter(p => p.category === 'fullstack').length },
-    { key: 'frontend', label: 'Frontend', count: projects.filter(p => p.category === 'frontend').length },
-    { key: 'backend', label: 'Backend', count: projects.filter(p => p.category === 'backend').length }
+    { key: "all", label: "All Projects", count: projects.length },
+    {
+      key: "fullstack",
+      label: "Full Stack",
+      count: projects.filter((p) => p.category === "fullstack").length,
+    },
+    {
+      key: "frontend",
+      label: "Frontend",
+      count: projects.filter((p) => p.category === "frontend").length,
+    },
+    {
+      key: "backend",
+      label: "Backend",
+      count: projects.filter((p) => p.category === "backend").length,
+    },
   ];
 
   return (
@@ -313,12 +390,11 @@ const Projects = () => {
         {/* Section Header */}
         <div className="section-header">
           <h2 className="section-title">
-            <span className="title-gradient">
-              &lt; Projects /&gt;
-            </span>
+            <span className="title-gradient">&lt; Projects /&gt;</span>
           </h2>
           <p className="section-subtitle">
-            A showcase of my technical skills and creative problem-solving through real-world applications
+            A showcase of my technical skills and creative problem-solving
+            through real-world applications
           </p>
         </div>
 
@@ -328,7 +404,9 @@ const Projects = () => {
             <button
               key={filterItem.key}
               onClick={() => setFilter(filterItem.key)}
-              className={`filter-btn ${filter === filterItem.key ? 'active' : ''}`}
+              className={`filter-btn ${
+                filter === filterItem.key ? "active" : ""
+              }`}
             >
               <span className="filter-label">{filterItem.label}</span>
               <span className="filter-count">{filterItem.count}</span>
@@ -339,7 +417,11 @@ const Projects = () => {
         {/* Projects Grid with 3D Perspective */}
         <div className="projects-grid">
           {filteredProjects.map((project, index) => (
-            <ProjectCard key={`${project.title}-${filter}`} project={project} index={index} />
+            <ProjectCard
+              key={`${project.title}-${filter}`}
+              project={project}
+              index={index}
+            />
           ))}
         </div>
 
@@ -348,7 +430,9 @@ const Projects = () => {
           <div className="cta-content">
             <div className="cta-text">
               <h3>Want to see more?</h3>
-              <p>Explore my complete collection of projects and contributions</p>
+              <p>
+                Explore my complete collection of projects and contributions
+              </p>
             </div>
             <a
               href="https://github.com/firoz1860"
@@ -368,7 +452,12 @@ const Projects = () => {
         .projects-section {
           min-height: 100vh;
           padding: 5rem 0;
-          background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+          background: linear-gradient(
+            135deg,
+            #0f172a 0%,
+            #1e1b4b 50%,
+            #0f172a 100%
+          );
           position: relative;
           overflow: hidden;
           perspective: 1000px;
@@ -420,8 +509,10 @@ const Projects = () => {
         .grid-pattern {
           position: absolute;
           inset: 0;
-          background-image: 
-            linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px),
+          background-image: linear-gradient(
+              rgba(139, 92, 246, 0.1) 1px,
+              transparent 1px
+            ),
             linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px);
           background-size: 50px 50px;
           opacity: 0.5;
@@ -449,7 +540,13 @@ const Projects = () => {
         }
 
         .title-gradient {
-          background: linear-gradient(135deg, #8b5cf6, #06b6d4, #ec4899, #8b5cf6);
+          background: linear-gradient(
+            135deg,
+            #8b5cf6,
+            #06b6d4,
+            #ec4899,
+            #8b5cf6
+          );
           background-size: 300% 300%;
           background-clip: text;
           -webkit-background-clip: text;
@@ -538,19 +635,19 @@ const Projects = () => {
         .project-card:hover {
           transform: scale(1.05) translateY(-10px) rotateX(5deg);
           z-index: 10;
-          box-shadow: 
-            0 25px 50px rgba(0, 0, 0, 0.4),
-            0 0 0 1px rgba(139, 92, 246, 0.3),
-            0 0 80px rgba(139, 92, 246, 0.2);
+          box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4),
+            0 0 0 1px rgba(139, 92, 246, 0.3), 0 0 80px rgba(139, 92, 246, 0.2);
         }
 
         .glass-overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(135deg, 
-            rgba(255, 255, 255, 0.1) 0%, 
-            rgba(255, 255, 255, 0.05) 50%, 
-            rgba(255, 255, 255, 0.1) 100%);
+          background: linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.1) 0%,
+            rgba(255, 255, 255, 0.05) 50%,
+            rgba(255, 255, 255, 0.1) 100%
+          );
           opacity: 0;
           transition: opacity 0.3s ease;
           pointer-events: none;
@@ -594,10 +691,12 @@ const Projects = () => {
         .image-overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(180deg, 
-            transparent 0%, 
-            rgba(15, 23, 42, 0.3) 50%, 
-            rgba(15, 23, 42, 0.8) 100%);
+          background: linear-gradient(
+            180deg,
+            transparent 0%,
+            rgba(15, 23, 42, 0.3) 50%,
+            rgba(15, 23, 42, 0.8) 100%
+          );
         }
 
         .status-badge {
@@ -782,7 +881,11 @@ const Projects = () => {
 
         .tech-tag {
           padding: 0.25rem 0.75rem;
-          background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(6, 182, 212, 0.2));
+          background: linear-gradient(
+            135deg,
+            rgba(139, 92, 246, 0.2),
+            rgba(6, 182, 212, 0.2)
+          );
           color: #c084fc;
           font-size: 0.75rem;
           font-weight: 500;
@@ -793,7 +896,11 @@ const Projects = () => {
 
         .tech-tag:hover {
           border-color: rgba(139, 92, 246, 0.6);
-          background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(6, 182, 212, 0.3));
+          background: linear-gradient(
+            135deg,
+            rgba(139, 92, 246, 0.3),
+            rgba(6, 182, 212, 0.3)
+          );
         }
 
         .tech-more {
@@ -819,19 +926,31 @@ const Projects = () => {
         }
 
         .category-tag.fullstack {
-          background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(59, 130, 246, 0.2));
+          background: linear-gradient(
+            135deg,
+            rgba(34, 197, 94, 0.2),
+            rgba(59, 130, 246, 0.2)
+          );
           color: #4ade80;
           border: 1px solid rgba(34, 197, 94, 0.3);
         }
 
         .category-tag.frontend {
-          background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2));
+          background: linear-gradient(
+            135deg,
+            rgba(59, 130, 246, 0.2),
+            rgba(139, 92, 246, 0.2)
+          );
           color: #60a5fa;
           border: 1px solid rgba(59, 130, 246, 0.3);
         }
 
         .category-tag.backend {
-          background: linear-gradient(135deg, rgba(249, 115, 22, 0.2), rgba(239, 68, 68, 0.2));
+          background: linear-gradient(
+            135deg,
+            rgba(249, 115, 22, 0.2),
+            rgba(239, 68, 68, 0.2)
+          );
           color: #fb923c;
           border: 1px solid rgba(249, 115, 22, 0.3);
         }
@@ -859,7 +978,13 @@ const Projects = () => {
           inset: 0;
           border-radius: 24px;
           padding: 1px;
-          background: linear-gradient(135deg, #8b5cf6, #06b6d4, #ec4899, #8b5cf6);
+          background: linear-gradient(
+            135deg,
+            #8b5cf6,
+            #06b6d4,
+            #ec4899,
+            #8b5cf6
+          );
           background-size: 300% 300%;
           opacity: 0;
           transition: opacity 0.3s ease;
@@ -871,7 +996,7 @@ const Projects = () => {
         }
 
         .animated-border::before {
-          content: '';
+          content: "";
           position: absolute;
           inset: 1px;
           background: rgba(15, 23, 42, 0.95);
@@ -944,7 +1069,11 @@ const Projects = () => {
         .button-glow {
           position: absolute;
           inset: 0;
-          background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+          background: linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.2),
+            transparent
+          );
           opacity: 0;
           transition: opacity 0.3s ease;
         }
@@ -955,23 +1084,42 @@ const Projects = () => {
 
         /* Animations */
         @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
+          0%,
+          100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-20px);
+          }
         }
 
         @keyframes gradientShift {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
+          0%,
+          100% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
         }
 
         @keyframes gridMove {
-          0% { transform: translate(0, 0); }
-          100% { transform: translate(50px, 50px); }
+          0% {
+            transform: translate(0, 0);
+          }
+          100% {
+            transform: translate(50px, 50px);
+          }
         }
 
         @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.5; }
+          0%,
+          100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.5;
+          }
         }
 
         /* Responsive Design */
@@ -1039,17 +1187,15 @@ const Projects = () => {
 
 export default Projects;
 
-
-
 // import React, { useEffect, useState } from 'react';
 // import AOS from 'aos';
 // import 'aos/dist/aos.css';
 // import { ExternalLink, Github, Eye, Star, GitFork } from 'lucide-react';
 
 // const projects = [
-//   { 
-//     title: "JobPortal", 
-//     desc: "A comprehensive job portal built with the MERN stack, featuring advanced search, real-time notifications, and secure authentication. Includes recruiter dashboard and candidate management.", 
+//   {
+//     title: "JobPortal",
+//     desc: "A comprehensive job portal built with the MERN stack, featuring advanced search, real-time notifications, and secure authentication. Includes recruiter dashboard and candidate management.",
 //     link: "https://github.com/firoz1860/JobPortal",
 //     demo: "#",
 //     image: "https://images.pexels.com/photos/4195504/pexels-photo-4195504.jpeg",
@@ -1058,20 +1204,20 @@ export default Projects;
 //     featured: true,
 //     stats: { stars: 15, forks: 8, views: 230 }
 //   },
-//   { 
-//     title: "NewsApp", 
-//     desc: "React-based news application with infinite scrolling, category filtering, and real-time updates. Features responsive design and optimized performance.", 
+//   {
+//     title: "NewsApp",
+//     desc: "React-based news application with infinite scrolling, category filtering, and real-time updates. Features responsive design and optimized performance.",
 //     link: "https://github.com/firoz1860/news",
 //     demo: "#",
-//     image: "/news.png", 
+//     image: "/news.png",
 //     tech: ["React", "News API", "CSS3", "JavaScript"],
 //     category: "frontend",
 //     featured: false,
 //     stats: { stars: 12, forks: 5, views: 180 }
 //   },
-//   { 
-//     title: "Apollo247", 
-//     desc: "Healthcare platform offering online consultations, medicine delivery, and health records management. Built with modern web technologies for optimal user experience.", 
+//   {
+//     title: "Apollo247",
+//     desc: "Healthcare platform offering online consultations, medicine delivery, and health records management. Built with modern web technologies for optimal user experience.",
 //     link: "https://apolo247.vercel.app/",
 //     demo: "https://apolo247.vercel.app/",
 //     // image: "https://images.pexels.com/photos/4269274/pexels-photo-4269274.jpeg",
@@ -1081,9 +1227,9 @@ export default Projects;
 //     featured: true,
 //     stats: { stars: 20, forks: 12, views: 350 }
 //   },
-//   { 
-//     title: "3D Portfolio", 
-//     desc: "Interactive 3D portfolio showcasing modern web development with Three.js, featuring smooth animations and immersive user experience.", 
+//   {
+//     title: "3D Portfolio",
+//     desc: "Interactive 3D portfolio showcasing modern web development with Three.js, featuring smooth animations and immersive user experience.",
 //     link: "https://3-d-portfolio-psi-gold.vercel.app/",
 //     demo: "https://3-d-portfolio-psi-gold.vercel.app/",
 //     image: "https://images.pexels.com/photos/8566526/pexels-photo-8566526.jpeg",
@@ -1092,9 +1238,9 @@ export default Projects;
 //     featured: true,
 //     stats: { stars: 25, forks: 10, views: 420 }
 //   },
-//   { 
-//     title: "YouTube Backend", 
-//     desc: "Scalable backend service powering video streaming platform with user authentication, video processing, and real-time features.", 
+//   {
+//     title: "YouTube Backend",
+//     desc: "Scalable backend service powering video streaming platform with user authentication, video processing, and real-time features.",
 //     link: "https://github.com/firoz1860/youtube",
 //     demo: "#",
 //     image: "https://images.pexels.com/photos/4348401/pexels-photo-4348401.jpeg",
@@ -1103,9 +1249,9 @@ export default Projects;
 //     featured: false,
 //     stats: { stars: 18, forks: 7, views: 290 }
 //   },
-//   { 
-//     title: "Job-finder", 
-//     desc: "A job-finding platform connecting job seekers with employers, featuring advanced search and filtering options.", 
+//   {
+//     title: "Job-finder",
+//     desc: "A job-finding platform connecting job seekers with employers, featuring advanced search and filtering options.",
 //     link: "https://github.com/firoz1860/job-finder",
 //     demo: "#",
 //     image: "/job.png",
@@ -1133,13 +1279,13 @@ export default Projects;
 //       <div className="relative bg-gray-900/80 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-700/50 hover:border-purple-500/50 transition-all duration-500 h-full">
 //         {/* Project Image */}
 //         <div className="relative h-64 overflow-hidden">
-//           <img 
-//             src={project.image} 
-//             alt={project.title} 
-//             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+//           <img
+//             src={project.image}
+//             alt={project.title}
+//             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
 //           />
 //           <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-80"></div>
-          
+
 //           {/* Featured Badge */}
 //           {project.featured && (
 //             <div className="absolute top-4 left-4 px-3 py-1 bg-gradient-to-r from-purple-600 to-cyan-600 text-white text-xs font-bold rounded-full">
@@ -1197,7 +1343,7 @@ export default Projects;
 //               <span>{project.stats.views}</span>
 //             </div>
 //           </div>
-          
+
 //           <p className="text-gray-400 text-sm leading-relaxed mb-4 line-clamp-3">
 //             {project.desc}
 //           </p>
@@ -1217,15 +1363,15 @@ export default Projects;
 //           {/* Category Tag */}
 //           <div className="flex items-center justify-between">
 //             <span className={`px-3 py-1 text-xs font-medium rounded-full ${
-//               project.category === 'fullstack' 
-//                 ? 'bg-gradient-to-r from-green-500/20 to-blue-500/20 text-green-300 border border-green-500/30' 
-//                 : project.category === 'frontend' 
+//               project.category === 'fullstack'
+//                 ? 'bg-gradient-to-r from-green-500/20 to-blue-500/20 text-green-300 border border-green-500/30'
+//                 : project.category === 'frontend'
 //                 ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-300 border border-blue-500/30'
 //                 : 'bg-gradient-to-r from-orange-500/20 to-red-500/20 text-orange-300 border border-orange-500/30'
 //             }`}>
 //               {project.category.charAt(0).toUpperCase() + project.category.slice(1)}
 //             </span>
-            
+
 //             <div className="flex space-x-2">
 //               <a
 //                 href={project.link}
@@ -1265,7 +1411,7 @@ export default Projects;
 //   const [filteredProjects, setFilteredProjects] = useState(projects);
 
 //   useEffect(() => {
-//     AOS.init({ 
+//     AOS.init({
 //       once: true,
 //       duration: 600,
 //       easing: 'ease-out-cubic'
@@ -1365,8 +1511,6 @@ export default Projects;
 
 // export default Projects;
 
-
-
 // // src/components/Projects.js
 // import React, { useEffect } from 'react';
 // import AOS from 'aos';
@@ -1374,41 +1518,41 @@ export default Projects;
 // import { image } from 'framer-motion/client';
 
 // const projects = [
-//   { 
-//     title: "JobPortal", 
-//     desc: "Job Portal is a web application where job seekers can find and apply for jobs, and employers can post job openings and manage applications — built using the MERN stack.", 
+//   {
+//     title: "JobPortal",
+//     desc: "Job Portal is a web application where job seekers can find and apply for jobs, and employers can post job openings and manage applications — built using the MERN stack.",
 //     link: "https://github.com/firoz1860/JobPortal",
 //     image: "/job-portal.png",
 //   },
-//   { 
-//     title: "NewsApp", 
-//     desc: "NewsApp is a React-based news application that fetches real-time headlines from the NewsAPI. It supports infinite scrolling, categorized browsing (like sports, technology, health), country-based filtering, and dynamic loading indicators. Users can seamlessly explore the latest news with a clean and responsive UI.", 
+//   {
+//     title: "NewsApp",
+//     desc: "NewsApp is a React-based news application that fetches real-time headlines from the NewsAPI. It supports infinite scrolling, categorized browsing (like sports, technology, health), country-based filtering, and dynamic loading indicators. Users can seamlessly explore the latest news with a clean and responsive UI.",
 //     link: "https://github.com/firoz1860/news",
-//     image: "/news-app.png", 
+//     image: "/news-app.png",
 //   },
-//   { 
-//     title: "Apollo247", 
-//     desc: "Apollo 24|7 is a comprehensive digital healthcare platform offering online doctor consultations, medicine delivery, lab tests, and health records management — all in one app. Backed by the trusted Apollo Hospitals, it ensures accessible, reliable, and personalized healthcare anytime, anywhere.", 
+//   {
+//     title: "Apollo247",
+//     desc: "Apollo 24|7 is a comprehensive digital healthcare platform offering online doctor consultations, medicine delivery, lab tests, and health records management — all in one app. Backed by the trusted Apollo Hospitals, it ensures accessible, reliable, and personalized healthcare anytime, anywhere.",
 //     link: "https://apolo247.vercel.app/",
-//     image: "/apollo.png" 
+//     image: "/apollo.png"
 //   },
-//   { 
-//     title: "3D-Portfolio", 
-//     desc: "3D Portfolio is a modern, interactive personal portfolio built using React, Three.js, and WebGL. It features smooth animations, 3D models, and responsive design to creatively showcase projects, skills, and experience in an engaging and immersive way.", 
+//   {
+//     title: "3D-Portfolio",
+//     desc: "3D Portfolio is a modern, interactive personal portfolio built using React, Three.js, and WebGL. It features smooth animations, 3D models, and responsive design to creatively showcase projects, skills, and experience in an engaging and immersive way.",
 //     link: "https://3-d-portfolio-psi-gold.vercel.app/",
-//     image: "3D-Portfolio.png" 
+//     image: "3D-Portfolio.png"
 //   },
-//   { 
-//     title: "YouTube Backend", 
-//     desc: "YouTube Backend is a RESTful API service that powers core features of a video-sharing platform, including user authentication, video upload, streaming, likes, comments, and subscriptions. Built using Node.js, Express, MongoDB, and JWT for secure and scalable backend operations.", 
+//   {
+//     title: "YouTube Backend",
+//     desc: "YouTube Backend is a RESTful API service that powers core features of a video-sharing platform, including user authentication, video upload, streaming, likes, comments, and subscriptions. Built using Node.js, Express, MongoDB, and JWT for secure and scalable backend operations.",
 //     link: "https://github.com/firoz1860/youtube",
-//     image: "/backend.png" 
+//     image: "/backend.png"
 //   },
-//   // { 
-//   //   title: "Docs", 
-//   //   desc: "Website to collaboratively share documents.", 
+//   // {
+//   //   title: "Docs",
+//   //   desc: "Website to collaboratively share documents.",
 //   //   link: "https://github.com/example/docs",
-//   //   image: "https://via.placeholder.com/300x200?text=Docs" 
+//   //   image: "https://via.placeholder.com/300x200?text=Docs"
 //   // },
 // ];
 
@@ -1459,4 +1603,3 @@ export default Projects;
 // };
 
 // export default Projects;
-
