@@ -62,7 +62,7 @@ const Footer = () => {
     },
     { 
       icon: FaInstagram, 
-      url: 'https://instagram.com/_feroze_003', 
+      url: 'https://instagram.com/_firoz_023', 
       label: 'Instagram',
       color: 'hover:text-pink-500'
     },

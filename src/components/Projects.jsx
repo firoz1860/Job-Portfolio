@@ -137,6 +137,27 @@ const projects = [
     year: "2023",
     status: "Completed",
   },
+  {
+    title: "Smart-Note-App",
+    desc: "A note-taking application with smart features like tagging, searching, and real-time collaboration.",
+    link: "https://github.com/firoz1860/smart-note-app",
+    demo: "https://smart-note-taking-app-kappa.vercel.app/",
+    image: "/smart-note-app.png",
+    tech: [
+      "Next.js",
+      "Node.js",
+      "Firebase",
+      "Langchain",
+      "Tailwind CSS",
+      "HTML",
+      "CSS",
+    ],
+    category: "fullstack",
+    featured: false,
+    stats: { stars: 18, forks: 7, views: 290 },
+    year: "2025",
+    status: "Completed",
+  },
 ];
 
 const ProjectCard = ({ project, index }) => {
