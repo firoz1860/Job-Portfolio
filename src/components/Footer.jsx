@@ -20,22 +20,39 @@ const Footer = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 500);
+      if (ticking) return;
+
+      ticking = true;
+      requestAnimationFrame(() => {
+        setShowScrollTop(window.scrollY > 500);
+        ticking = false;
+      });
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
     document.documentElement.classList.remove('dark', 'light');
+    document.documentElement.removeAttribute('data-theme');
 
+    const themeColor = document.querySelector('meta[name="theme-color"]');
+    let resolvedTheme = theme;
     if (theme === 'system') {
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      document.documentElement.classList.add(prefersDark ? 'dark' : 'light');
+      resolvedTheme = prefersDark ? 'dark' : 'light';
+      document.documentElement.classList.add(resolvedTheme);
     } else {
       document.documentElement.classList.add(theme);
+    }
+
+    document.documentElement.dataset.theme = resolvedTheme;
+    if (themeColor) {
+      themeColor.setAttribute('content', resolvedTheme === 'dark' ? '#000000' : '#f8fafc');
     }
 
     localStorage.setItem('theme', theme);
@@ -82,12 +99,6 @@ const Footer = () => {
 
   return (
     <footer className="relative bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white py-16 overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-10 left-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-10 right-10 w-64 h-64 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-2000"></div>
-      </div>
-
       <div className="container mx-auto px-6 relative z-10">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
@@ -102,7 +113,7 @@ const Footer = () => {
             </p>
             <div className="flex items-center justify-center md:justify-start space-x-2 text-sm text-gray-400">
               <span>Made with</span>
-              <Heart className="w-4 h-4 text-red-500 animate-pulse" fill="currentColor" />
+              <Heart className="w-4 h-4 text-red-500" fill="currentColor" />
               <span>in Delhi, India</span>
             </div>
           </div>
@@ -220,11 +231,6 @@ const Footer = () => {
         </button>
       )}
 
-      <style jsx>{`
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-      `}</style>
     </footer>
   );
 };

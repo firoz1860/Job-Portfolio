@@ -6,11 +6,19 @@ const Header = () => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      if (ticking) return;
+
+      ticking = true;
+      requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 50);
+        ticking = false;
+      });
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -26,7 +34,7 @@ const Header = () => {
     }`}>
       <div className="flex justify-between items-center max-w-7xl mx-auto px-6 py-4">
         <div className="relative group">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent animate-pulse">
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 via-cyan-400 to-emerald-300 bg-clip-text text-transparent">
             &lt; Firoz /&gt;
           </h1>
           <div className="absolute -inset-2 bg-gradient-to-r from-purple-600 to-cyan-600 rounded-lg blur opacity-0 group-hover:opacity-30 transition duration-1000"></div>
@@ -34,7 +42,7 @@ const Header = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex space-x-8">
-          {navItems.map((item, index) => (
+          {navItems.map((item) => (
             <button
               key={item}
               onClick={() => {
@@ -44,7 +52,6 @@ const Header = () => {
                 }
               }}
               className="relative cursor-pointer text-gray-300 hover:text-white transition-all duration-300 group py-2"
-              style={{ animationDelay: `${index * 100}ms` }}
             >
               <span className="relative z-10 font-medium">
                 {item.charAt(0).toUpperCase() + item.slice(1)}
@@ -74,7 +81,7 @@ const Header = () => {
           : 'max-h-0 opacity-0 overflow-hidden'
       }`}>
         <div className="px-6 py-4 space-y-4">
-          {navItems.map((item, index) => (
+          {navItems.map((item) => (
             <button
               key={item}
               onClick={() => {
@@ -85,7 +92,6 @@ const Header = () => {
                 toggleMenu();
               }}
               className="block relative group cursor-pointer w-full text-left"
-              style={{ animationDelay: `${index * 100}ms` }}
             >
               <div className="flex items-center space-x-3 py-3 px-4 rounded-lg hover:bg-purple-500/10 transition-all duration-300">
                 <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-cyan-400 rounded-full transform scale-0 group-hover:scale-100 transition-transform duration-300"></div>

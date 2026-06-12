@@ -94,19 +94,6 @@ const Contact = () => {
 
   return (
     <section id="contact" className="min-h-screen py-12 sm:py-16 md:py-20 bg-gradient-to-br from-gray-900 via-purple-900/30 to-gray-900 relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-10 left-10 sm:top-20 sm:left-20 w-56 h-56 sm:w-80 sm:h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-2xl sm:blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-10 right-10 sm:bottom-20 sm:right-20 w-48 h-48 sm:w-72 sm:h-72 bg-cyan-500 rounded-full mix-blend-multiply filter blur-2xl sm:blur-3xl animate-pulse animation-delay-2000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 sm:w-96 sm:h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-2xl sm:blur-3xl animate-pulse animation-delay-4000"></div>
-      </div>
-
-      {/* Geometric Patterns */}
-      <div className="absolute inset-0 opacity-5 sm:opacity-10">
-        <div className="absolute top-16 right-16 sm:top-32 sm:right-32 w-16 h-16 sm:w-24 sm:h-24 border border-purple-500 transform rotate-45 animate-spin-slow"></div>
-        <div className="absolute bottom-16 left-16 sm:bottom-32 sm:left-32 w-12 h-12 sm:w-16 sm:h-16 border border-cyan-500 transform rotate-12 animate-pulse"></div>
-      </div>
-
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center mb-12 sm:mb-16">
@@ -270,17 +257,6 @@ const Contact = () => {
         </div>
       </div>
 
-      <style jsx>{`
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-        .animation-delay-4000 {
-          animation-delay: 4s;
-        }
-        .animate-spin-slow {
-          animation: spin 8s linear infinite;
-        }
-      `}</style>
     </section>
   );
 };

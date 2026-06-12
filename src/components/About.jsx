@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Mail,
   Phone,
@@ -67,42 +67,52 @@ const About = () => {
       color: styles.skillPurple,
       level: 90,
     },
+    {
+      name: "LangChain",
+      icon: <Zap className="w-4 h-4 sm:w-5 sm:h-5" />,
+      color: styles.skillCyan,
+      level: 78,
+    },
+    {
+      name: "RAG",
+      icon: <Database className="w-4 h-4 sm:w-5 sm:h-5" />,
+      color: styles.skillPink,
+      level: 76,
+    },
+    {
+      name: "Vector DB",
+      icon: <Database className="w-4 h-4 sm:w-5 sm:h-5" />,
+      color: styles.skillTeal,
+      level: 75,
+    },
+    {
+      name: "AI Agents",
+      icon: <Cpu className="w-4 h-4 sm:w-5 sm:h-5" />,
+      color: styles.skillViolet,
+      level: 74,
+    },
+    {
+      name: "PostgreSQL",
+      icon: <Database className="w-4 h-4 sm:w-5 sm:h-5" />,
+      color: styles.skillSky,
+      level: 82,
+    },
+    {
+      name: "Redis",
+      icon: <Database className="w-4 h-4 sm:w-5 sm:h-5" />,
+      color: styles.skillRed,
+      level: 72,
+    },
   ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveSkill((prev) =>
-        prev === null ? 0 : (prev + 1) % skills.length
-      );
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [skills.length]);
 
   return (
     <section id="about" className={styles.aboutSection}>
-      {/* Enhanced Background Effects */}
-      <div className={styles.backgroundEffects}>
-        <div className={styles.backgroundCircle1}></div>
-        <div className={styles.backgroundCircle2}></div>
-        <div className={styles.backgroundCircle3}></div>
-        <div className={styles.backgroundCircle4}></div>
-      </div>
-
-      {/* Geometric Patterns */}
-      <div className={styles.geometricPatterns}>
-        <div className={styles.geometricShape1}></div>
-        <div className={styles.geometricShape2}></div>
-        <div className={styles.geometricShape3}></div>
-      </div>
-
       <div className={styles.container}>
         <div className={styles.header}>
           <h2 className={styles.title}>
             <span className={styles.titleGradient}>
               &lt; About Me /&gt;
             </span>
-            <div className={styles.titleBackground}></div>
           </h2>
           <p className={styles.subtitle}>
             Crafting digital experiences with passion, precision, and
