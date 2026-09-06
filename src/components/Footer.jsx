@@ -1,293 +1,224 @@
 import React, { useState, useEffect } from 'react';
-import { FaLinkedin, FaGithub, FaInstagram, FaMedium, FaTwitter } from 'react-icons/fa';
+import { FaLinkedin, FaGithub, FaInstagram, FaXTwitter } from 'react-icons/fa6';
 import { MdComputer } from 'react-icons/md';
-import { FiSun } from 'react-icons/fi';
-import { PiMoonStarsThin } from 'react-icons/pi';
-import { Heart, ArrowUp } from 'lucide-react';
+import { FiSun, FiMoon } from 'react-icons/fi';
+import { ArrowUp, Heart } from 'lucide-react';
+
+const socialLinks = [
+  { icon: FaGithub, url: 'https://github.com/firoz1860', label: 'GitHub' },
+  { icon: FaLinkedin, url: 'https://www.linkedin.com/in/firoz-ahmad-020166251', label: 'LinkedIn' },
+  { icon: FaXTwitter, url: 'https://x.com/FirozAh51793346', label: 'Twitter' },
+  { icon: FaInstagram, url: 'https://instagram.com/_firoz_023', label: 'Instagram' },
+];
+
+const themes = [
+  { key: 'system', icon: MdComputer, label: 'System theme' },
+  { key: 'light', icon: FiSun, label: 'Light theme' },
+  { key: 'dark', icon: FiMoon, label: 'Dark theme' },
+];
 
 const Footer = () => {
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('theme');
-      if (stored) return stored;
-
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      return prefersDark ? 'dark' : 'light';
+      return localStorage.getItem('theme') || 'dark';
     }
     return 'dark';
   });
-
-  const [showScrollTop, setShowScrollTop] = useState(false);
+  const [showTop, setShowTop] = useState(false);
 
   useEffect(() => {
     let ticking = false;
-
-    const handleScroll = () => {
+    const onScroll = () => {
       if (ticking) return;
-
       ticking = true;
       requestAnimationFrame(() => {
-        setShowScrollTop(window.scrollY > 500);
+        setShowTop(window.scrollY > 500);
         ticking = false;
       });
     };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   useEffect(() => {
-    document.documentElement.classList.remove('dark', 'light');
-    document.documentElement.removeAttribute('data-theme');
-
-    const themeColor = document.querySelector('meta[name="theme-color"]');
-    let resolvedTheme = theme;
+    const root = document.documentElement;
+    root.classList.remove('dark', 'light');
+    let resolved = theme;
     if (theme === 'system') {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      resolvedTheme = prefersDark ? 'dark' : 'light';
-      document.documentElement.classList.add(resolvedTheme);
-    } else {
-      document.documentElement.classList.add(theme);
+      resolved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
-
-    document.documentElement.dataset.theme = resolvedTheme;
-    if (themeColor) {
-      themeColor.setAttribute('content', resolvedTheme === 'dark' ? '#000000' : '#f8fafc');
-    }
-
+    root.classList.add(resolved);
+    root.dataset.theme = resolved;
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', resolved === 'dark' ? '#070a12' : '#f6f8fc');
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  const switchTheme = (newTheme) => setTheme(newTheme);
+  const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const socialLinks = [
-    { 
-      icon: FaLinkedin, 
-      url: 'https://www.linkedin.com/in/firoz-ahmad-020166251', 
-      label: 'LinkedIn',
-      color: 'hover:text-blue-500'
-    },
-    { 
-      icon: FaGithub, 
-      url: 'https://github.com/firoz1860', 
-      label: 'GitHub',
-      color: 'hover:text-gray-300'
-    },
-    { 
-      icon: FaInstagram, 
-      url: 'https://instagram.com/_firoz_023', 
-      label: 'Instagram',
-      color: 'hover:text-pink-500'
-    },
-    { 
-      icon: FaTwitter, 
-      url: 'https://x.com/FirozAh51793346', 
-      label: 'Twitter',
-      color: 'hover:text-blue-400'
-    },
-    { 
-      icon: FaMedium, 
-      url: '#', 
-      label: 'Medium',
-      color: 'hover:text-green-500'
-    },
-  ];
+  const links = ['Home', 'About', 'Projects', 'Contact'];
 
   return (
-    <footer className="relative bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white py-16 overflow-hidden">
-      <div className="container mx-auto px-6 relative z-10">
-        {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-          {/* Brand Section */}
-          <div className="text-center md:text-left">
-            <h3 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent mb-4">
-              &lt; Firoz Ahmad /&gt;
-            </h3>
-            <p className="text-gray-400 leading-relaxed mb-6">
-              Full Stack Developer passionate about creating innovative web solutions 
-              that make a difference in people's lives.
+    <footer className="ft">
+      <div className="ft-top" />
+      <div className="ft-inner">
+        <div className="ft-grid">
+          <div className="ft-brand">
+            <h3 className="grad-text font-mono ft-logo">&lt;Firoz Ahmad/&gt;</h3>
+            <p className="ft-tagline text-muted">
+              Backend &amp; AI-focused Full Stack Developer building secure, scalable, and
+              intelligent web applications.
             </p>
-            <div className="flex items-center justify-center md:justify-start space-x-2 text-sm text-gray-400">
-              <span>Made with</span>
-              <Heart className="w-4 h-4 text-red-500" fill="currentColor" />
-              <span>in Delhi, India</span>
-            </div>
+            <p className="ft-made text-muted">
+              Built with <Heart className="w-3.5 h-3.5" fill="currentColor" /> in Delhi, India
+            </p>
           </div>
 
-          {/* Quick Links */}
-          <div className="text-center">
-            <h4 className="text-xl font-semibold mb-6 text-cyan-400">Quick Links</h4>
-            <nav className="space-y-3">
-              {['Home', 'About', 'Projects', 'Contact'].map((link) => (
-                <a
-                  key={link}
-                  href={`#${link.toLowerCase()}`}
-                  className="block text-gray-400 hover:text-white transition-colors duration-300 hover:translate-x-1 transform"
-                >
-                  {link}
-                </a>
-              ))}
-            </nav>
+          <div className="ft-col">
+            <h4 className="ft-col-title">Navigate</h4>
+            {links.map((l) => (
+              <a key={l} href={`#${l.toLowerCase()}`} className="ft-link">{l}</a>
+            ))}
           </div>
 
-          {/* Contact Info */}
-          <div className="text-center md:text-right">
-            <h4 className="text-xl font-semibold mb-6 text-purple-400">Let's Connect</h4>
-            <div className="space-y-3 text-gray-400">
-              <p className="hover:text-white transition-colors duration-300">
-                firozahmed709p@gmail.com
-              </p>
-              <p className="hover:text-white transition-colors duration-300">
-                +91 9315742128
-              </p>
-              <p className="hover:text-white transition-colors duration-300">
-                Delhi, India
-              </p>
-            </div>
+          <div className="ft-col">
+            <h4 className="ft-col-title">Connect</h4>
+            <a href="mailto:firozahmed709p@gmail.com" className="ft-link">firozahmed709p@gmail.com</a>
+            <a href="tel:+919315742128" className="ft-link">+91 93157 42128</a>
+            <a href="https://github.com/firoz1860?tab=repositories" target="_blank" rel="noopener noreferrer" className="ft-link">All repositories</a>
           </div>
         </div>
 
-        {/* Social Links */}
-        <div className="text-center mb-8">
-          <h4 className="text-lg font-semibold mb-6 text-gray-300">Follow Me</h4>
-          <div className="flex justify-center space-x-6">
-            {socialLinks.map((social, index) => (
-              <a
-                key={index}
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`group p-3 bg-gray-800/50 rounded-full border border-gray-700/50 transition-all duration-300 hover:border-gray-600 hover:bg-gray-700/50 hover:scale-110 ${social.color}`}
-                aria-label={social.label}
-              >
-                <social.icon className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
+        <div className="ft-bar">
+          <div className="ft-socials">
+            {socialLinks.map((s) => (
+              <a key={s.label} href={s.url} target="_blank" rel="noopener noreferrer" className="ft-social" aria-label={s.label}>
+                <s.icon size={18} />
               </a>
+            ))}
+          </div>
+
+          <div className="ft-theme" role="group" aria-label="Theme">
+            {themes.map((t) => (
+              <button
+                key={t.key}
+                type="button"
+                onClick={() => setTheme(t.key)}
+                className={`ft-theme-btn ${theme === t.key ? 'is-active' : ''}`}
+                aria-label={t.label}
+                aria-pressed={theme === t.key}
+              >
+                <t.icon size={16} />
+              </button>
             ))}
           </div>
         </div>
 
-        {/* Theme Switcher */}
-        <div className="flex justify-center mb-8">
-          <div className="flex items-center gap-2 bg-gray-800/60 backdrop-blur-sm p-2 rounded-full border border-gray-700/50">
-            <button 
-              onClick={() => switchTheme('system')} 
-              className={`p-3 rounded-full transition-all duration-300 ${
-                theme === 'system' 
-                  ? 'bg-gray-700 text-white shadow-lg' 
-                  : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
-              }`}
-              aria-label="System theme"
-            >
-              <MdComputer size={18} />
-            </button>
-            <button 
-              onClick={() => switchTheme('light')} 
-              className={`p-3 rounded-full transition-all duration-300 ${
-                theme === 'light' 
-                  ? 'bg-gray-700 text-white shadow-lg' 
-                  : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
-              }`}
-              aria-label="Light theme"
-            >
-              <FiSun size={18} />
-            </button>
-            <button 
-              onClick={() => switchTheme('dark')} 
-              className={`p-3 rounded-full transition-all duration-300 ${
-                theme === 'dark' 
-                  ? 'bg-gray-700 text-white shadow-lg' 
-                  : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
-              }`}
-              aria-label="Dark theme"
-            >
-              <PiMoonStarsThin size={18} />
-            </button>
-          </div>
-        </div>
-
-        {/* Copyright */}
-        <div className="text-center pt-8 border-t border-gray-800">
-          <p className="text-gray-400 text-sm">
-            © {new Date().getFullYear()} Firoz Ahmad. All rights reserved.
-          </p>
-          <p className="text-gray-500 text-xs mt-2">
-            Crafted with modern web technologies
-          </p>
-        </div>
+        <p className="ft-copy text-muted">
+          © {new Date().getFullYear()} Firoz Ahmad. All rights reserved.
+        </p>
       </div>
 
-      {/* Scroll to Top Button */}
-      {showScrollTop && (
-        <button
-          onClick={scrollToTop}
-          className="fixed bottom-8 right-8 p-3 bg-gradient-to-r from-purple-600 to-cyan-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 z-50"
-          aria-label="Scroll to top"
-        >
+      {showTop && (
+        <button type="button" onClick={scrollTop} className="ft-toTop" aria-label="Scroll to top">
           <ArrowUp className="w-5 h-5" />
         </button>
       )}
 
+      <style>{`
+        .ft { position: relative; background: var(--bg-soft); border-top: 1px solid var(--border); }
+        .ft-top { height: 3px; background: var(--grad); }
+        .ft-inner { max-width: 1200px; margin: 0 auto; padding: 3.5rem 1.25rem 2rem; }
+        .ft-grid {
+          display: grid;
+          grid-template-columns: 1.6fr 1fr 1fr;
+          gap: 2rem;
+          margin-bottom: 2.5rem;
+        }
+        .ft-logo { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.9rem; }
+        .ft-tagline { font-size: 0.9rem; line-height: 1.6; max-width: 340px; margin-bottom: 1rem; }
+        .ft-made { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.82rem; color: #f87171; }
+        .ft-col { display: flex; flex-direction: column; gap: 0.6rem; }
+        .ft-col-title { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text); margin-bottom: 0.4rem; }
+        .ft-link { color: var(--muted); font-size: 0.9rem; text-decoration: none; transition: color 0.2s ease; }
+        .ft-link:hover { color: var(--accent); }
+
+        .ft-bar {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 1rem;
+          padding: 1.5rem 0;
+          border-top: 1px solid var(--border);
+          flex-wrap: wrap;
+        }
+        .ft-socials { display: flex; gap: 0.6rem; }
+        .ft-social {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 2.6rem;
+          height: 2.6rem;
+          border-radius: 999px;
+          border: 1px solid var(--border);
+          background: var(--surface);
+          color: var(--text-soft);
+          transition: all 0.2s ease;
+        }
+        .ft-social:hover { color: var(--text); border-color: var(--accent); transform: translateY(-2px); }
+        .ft-theme {
+          display: inline-flex;
+          gap: 0.25rem;
+          padding: 0.25rem;
+          border-radius: 999px;
+          background: var(--surface);
+          border: 1px solid var(--border);
+        }
+        .ft-theme-btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 2.2rem;
+          height: 2.2rem;
+          border-radius: 999px;
+          border: none;
+          background: transparent;
+          color: var(--muted);
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+        .ft-theme-btn:hover { color: var(--text); }
+        .ft-theme-btn.is-active { background: var(--surface-strong); color: var(--accent); }
+
+        .ft-copy { text-align: center; font-size: 0.8rem; }
+
+        .ft-toTop {
+          position: fixed;
+          bottom: 1.75rem;
+          right: 1.75rem;
+          z-index: 40;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 3rem;
+          height: 3rem;
+          border-radius: 999px;
+          border: none;
+          cursor: pointer;
+          color: #05070d;
+          background: var(--grad);
+          box-shadow: 0 12px 30px -12px var(--accent);
+          transition: transform 0.2s ease;
+        }
+        .ft-toTop:hover { transform: translateY(-3px); }
+
+        @media (max-width: 720px) {
+          .ft-grid { grid-template-columns: 1fr 1fr; }
+          .ft-brand { grid-column: 1 / -1; }
+        }
+      `}</style>
     </footer>
   );
 };
 
 export default Footer;
-
-
-// // src/components/Footer.js
-// import React, { useState, useEffect } from 'react';
-// import { FaLinkedin, FaGithub, FaInstagram, FaMedium } from 'react-icons/fa';
-// import { MdComputer } from 'react-icons/md';
-// import { FiSun } from 'react-icons/fi';
-// import { PiMoonStarsThin } from 'react-icons/pi';
-
-// const Footer = () => {
-//   const [theme, setTheme] = useState(() => {
-//     if (typeof window !== 'undefined') {
-//       const stored = localStorage.getItem('theme');
-//       if (stored) return stored;
-
-//       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-//       return prefersDark ? 'dark' : 'light';
-//     }
-//     return 'dark';
-//   });
-
-//   useEffect(() => {
-//     document.documentElement.classList.remove('dark', 'light');
-
-//     if (theme === 'system') {
-//       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-//       document.documentElement.classList.add(prefersDark ? 'dark' : 'light');
-//     } else {
-//       document.documentElement.classList.add(theme);
-//     }
-
-//     localStorage.setItem('theme', theme);
-//   }, [theme]);
-
-//   const switchTheme = (newTheme) => setTheme(newTheme);
-
-//   return (
-//     <footer className="py-8 text-center text-gray-400">
-//       <p className="mb-4">Find me on:</p>
-//       <div className="flex justify-center space-x-6 mb-4">
-//         <a href="www.linkedin.com/in/firoz-ahmad-020166251" className="hover:text-white" target="_blank" rel="noopener noreferrer"><FaLinkedin /></a>
-//         <a href="https://github.com/firoz1860" className="hover:text-white" target="_blank" rel="noopener noreferrer"><FaGithub /></a>
-//         <a href="https://instagram.com/_feroze_003" className="hover:text-white" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
-//         <a href="#" className="hover:text-white"><FaMedium /></a>
-//       </div>
-//       <div className="flex justify-center items-center gap-4 bg-gray-800 p-2 rounded-full w-fit mx-auto">
-//         <button onClick={() => switchTheme('system')} className={`text-white p-2 rounded-full ${theme === 'system' ? 'bg-gray-700' : ''}`}><MdComputer size={20} /></button>
-//         <button onClick={() => switchTheme('light')} className={`text-white p-2 rounded-full ${theme === 'light' ? 'bg-gray-700' : ''}`}><FiSun size={20} /></button>
-//         <button onClick={() => switchTheme('dark')} className={`text-white p-2 rounded-full ${theme === 'dark' ? 'bg-gray-700' : ''}`}><PiMoonStarsThin size={20} /></button>
-//       </div>
-//     </footer>
-//   );
-// };
-
-// export default Footer;

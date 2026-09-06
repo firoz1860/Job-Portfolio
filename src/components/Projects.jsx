@@ -1,75 +1,84 @@
-import React, { memo, useCallback, useMemo, useState } from "react";
-import { Calendar, Code2, ExternalLink, Github, Star } from "lucide-react";
+import React, { memo, useMemo, useState } from "react";
+import { ArrowUpRight, Calendar, Github, Search, Sparkles, Star } from "lucide-react";
 import projects from "../data/projects";
+import ProjectCover from "./ProjectCover.jsx";
+
+const GITHUB_URL = "https://github.com/firoz1860?tab=repositories";
 
 const filters = [
   { key: "all", label: "All" },
   { key: "fullstack", label: "Full Stack" },
-  { key: "frontend", label: "Frontend" },
+  { key: "ai", label: "AI / ML" },
   { key: "backend", label: "Backend" },
+  { key: "frontend", label: "Frontend" },
+  { key: "mobile", label: "Mobile" },
 ];
 
-const ProjectCard = memo(({ project, index }) => (
-  <article className="project-card">
-    <div className="image-container">
-      <img
-        src={project.image}
-        alt={project.title}
-        className="project-image"
-        loading={index < 2 ? "eager" : "lazy"}
-        decoding="async"
-        fetchPriority={index === 0 ? "high" : "auto"}
-        onError={(e) => {
-          e.currentTarget.src = "/backend.png";
-        }}
-      />
-      <div className={`status-badge ${project.status === "Live" ? "live" : "completed"}`}>
-        {project.status}
-      </div>
+const categoryLabel = {
+  fullstack: "Full Stack",
+  ai: "AI / ML",
+  backend: "Backend",
+  frontend: "Frontend",
+  mobile: "Mobile",
+};
+
+const ProjectCard = memo(({ project }) => (
+  <article className="pj-card card">
+    <div className="pj-cover">
+      <ProjectCover project={project} />
+      {project.featured && (
+        <span className="pj-featured">
+          <Star className="w-3 h-3" fill="currentColor" />
+          Featured
+        </span>
+      )}
     </div>
 
-    <div className="project-content">
-      <div className="project-heading">
-        <h3 className="project-title">{project.title}</h3>
-        {project.featured && (
-          <span className="featured-badge">
-            <Star className="w-3 h-3" />
-            Featured
-          </span>
-        )}
-      </div>
-
-      <div className="project-meta">
-        <span>
+    <div className="pj-body">
+      <div className="pj-top">
+        <h3 className="pj-title">{project.title}</h3>
+        <span className="pj-meta">
           <Calendar className="w-3.5 h-3.5" />
           {project.year}
         </span>
-        <span>
-          <Code2 className="w-3.5 h-3.5" />
-          {project.category}
-        </span>
       </div>
 
-      <p className="project-description">{project.desc}</p>
+      <p className="pj-desc">{project.desc}</p>
 
-      <div className="tech-stack">
-        {project.tech.slice(0, 4).map((tech) => (
-          <span key={tech} className="tech-tag">
-            {tech}
-          </span>
+      <div className="pj-tech">
+        {project.tech.slice(0, 4).map((t) => (
+          <span key={t} className="chip">{t}</span>
         ))}
-        {project.tech.length > 4 && <span className="tech-more">+{project.tech.length - 4}</span>}
+        {project.tech.length > 4 && (
+          <span className="chip">+{project.tech.length - 4}</span>
+        )}
       </div>
 
-      <div className="project-footer">
-        <span className={`category-tag ${project.category}`}>{project.category}</span>
-        <div className="action-links">
-          <a href={project.link} target="_blank" rel="noopener noreferrer" className="link-btn" aria-label={`${project.title} source code`}>
+      <div className="pj-foot">
+        <span className={`pj-cat pj-cat--${project.category}`}>
+          {categoryLabel[project.category]}
+        </span>
+        <div className="pj-links">
+          <a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="pj-link"
+            aria-label={`${project.title} source code on GitHub`}
+          >
             <Github className="w-4 h-4" />
+            Code
           </a>
-          {project.demo !== "#" && (
-            <a href={project.demo} target="_blank" rel="noopener noreferrer" className="link-btn" aria-label={`${project.title} live demo`}>
-              <ExternalLink className="w-4 h-4" />
+          {project.demo && (
+            <a
+              href={project.demo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="pj-link pj-link--demo"
+              aria-label={`${project.title} live demo`}
+            >
+              Live
+              <ArrowUpRight className="w-4 h-4" />
             </a>
           )}
         </div>
@@ -80,351 +89,329 @@ const ProjectCard = memo(({ project, index }) => (
 
 const Projects = () => {
   const [filter, setFilter] = useState("all");
+  const [query, setQuery] = useState("");
 
-  const projectCounts = useMemo(
+  const counts = useMemo(
     () =>
       projects.reduce(
-        (counts, project) => ({
-          ...counts,
-          [project.category]: (counts[project.category] || 0) + 1,
-        }),
+        (acc, p) => ({ ...acc, [p.category]: (acc[p.category] || 0) + 1 }),
         { all: projects.length }
       ),
     []
   );
 
-  const filteredProjects = useMemo(() => {
-    if (filter === "all") return projects;
-    return projects.filter((project) => project.category === filter);
-  }, [filter]);
+  const visible = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return projects.filter((p) => {
+      const matchCat = filter === "all" || p.category === filter;
+      if (!matchCat) return false;
+      if (!q) return true;
+      return (
+        p.title.toLowerCase().includes(q) ||
+        p.desc.toLowerCase().includes(q) ||
+        p.tech.some((t) => t.toLowerCase().includes(q))
+      );
+    });
+  }, [filter, query]);
 
-  const handleFilterChange = useCallback((nextFilter) => {
-    setFilter(nextFilter);
-  }, []);
+  const liveCount = useMemo(() => projects.filter((p) => p.demo).length, []);
 
   return (
-    <section id="projects" className="projects-section">
-      <div className="projects-container">
-        <div className="section-header">
-          <h2 className="section-title">&lt; Projects /&gt;</h2>
-          <p className="section-subtitle">
-            Selected full-stack, frontend, and backend work in a faster compact layout.
+    <section id="projects" className="pj-section aurora">
+      <div className="pj-container">
+        <header className="pj-header">
+          <span className="eyebrow">Selected work</span>
+          <h2 className="section-title">
+            Projects <span className="grad-text">/ {projects.length}</span>
+          </h2>
+          <p className="pj-sub text-muted">
+            {projects.length} repositories spanning full-stack apps, AI/ML systems,
+            backend services, and mobile — {liveCount} with live demos. Every card links
+            straight to the source and, where available, a deployed build.
           </p>
+        </header>
+
+        <div className="pj-controls">
+          <div className="pj-filters" role="tablist" aria-label="Filter projects by category">
+            {filters.map((f) => (
+              <button
+                key={f.key}
+                type="button"
+                onClick={() => setFilter(f.key)}
+                className={`pj-filter ${filter === f.key ? "is-active" : ""}`}
+                aria-pressed={filter === f.key}
+              >
+                {f.label}
+                <span className="pj-filter-count">{counts[f.key] || 0}</span>
+              </button>
+            ))}
+          </div>
+
+          <label className="pj-search">
+            <Search className="w-4 h-4" />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search projects or tech…"
+              aria-label="Search projects"
+            />
+          </label>
         </div>
 
-        <div className="filter-container" aria-label="Project filters">
-          {filters.map((item) => (
-            <button
-              key={item.key}
-              type="button"
-              onClick={() => handleFilterChange(item.key)}
-              className={`filter-btn ${filter === item.key ? "active" : ""}`}
-            >
-              <span>{item.label}</span>
-              <span className="filter-count">{projectCounts[item.key] || 0}</span>
-            </button>
-          ))}
-        </div>
+        {visible.length > 0 ? (
+          <div className="pj-grid">
+            {visible.map((p) => (
+              <ProjectCard key={p.repo} project={p} />
+            ))}
+          </div>
+        ) : (
+          <div className="pj-empty surface">
+            <Sparkles className="w-6 h-6" />
+            <p>No projects match “{query}”. Try another keyword.</p>
+          </div>
+        )}
 
-        <div className="projects-grid">
-          {filteredProjects.map((project, index) => (
-            <ProjectCard key={`${project.title}-${filter}`} project={project} index={index} />
-          ))}
+        <div className="pj-cta">
+          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
+            <Github className="w-4 h-4" />
+            View all repositories on GitHub
+            <ArrowUpRight className="w-4 h-4" />
+          </a>
         </div>
       </div>
 
       <style>{`
-        .projects-section {
-          min-height: 100vh;
-          padding: 4rem 0;
-          background: #0f172a;
-          content-visibility: auto;
-          contain-intrinsic-size: 1000px;
+        .pj-section {
+          padding: 6rem 0;
+          background: var(--bg);
         }
-
-        .projects-container {
-          max-width: 1280px;
+        .pj-container {
+          max-width: 1200px;
           margin: 0 auto;
-          padding: 0 1rem;
+          padding: 0 1.25rem;
         }
-
-        .section-header {
-          text-align: center;
-          margin-bottom: 2rem;
+        .pj-header {
+          max-width: 640px;
+          margin-bottom: 2.5rem;
         }
+        .pj-header .section-title { margin: 0.8rem 0 0.9rem; }
+        .pj-sub { font-size: 1rem; line-height: 1.65; }
 
-        .section-title {
-          color: #f8fafc;
-          font-size: clamp(2.25rem, 6vw, 4rem);
-          font-weight: 800;
-          margin-bottom: 0.75rem;
-        }
-
-        .section-subtitle {
-          color: #94a3b8;
-          font-size: 1rem;
-          line-height: 1.6;
-          max-width: 560px;
-          margin: 0 auto;
-        }
-
-        .filter-container {
+        .pj-controls {
           display: flex;
           flex-wrap: wrap;
-          justify-content: center;
-          gap: 0.75rem;
+          align-items: center;
+          justify-content: space-between;
+          gap: 1rem;
           margin-bottom: 2rem;
         }
+        .pj-filters {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5rem;
+        }
+        .pj-filter {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.45rem;
+          padding: 0.5rem 0.9rem;
+          border-radius: 999px;
+          border: 1px solid var(--border);
+          background: var(--surface);
+          color: var(--text-soft);
+          font-size: 0.85rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+        .pj-filter:hover { border-color: var(--border-strong); color: var(--text); }
+        .pj-filter.is-active {
+          color: #05070d;
+          background: var(--grad);
+          border-color: transparent;
+        }
+        .pj-filter-count {
+          min-width: 1.3rem;
+          height: 1.3rem;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0 0.35rem;
+          border-radius: 999px;
+          background: rgba(0,0,0,0.18);
+          font-size: 0.7rem;
+        }
+        .pj-filter:not(.is-active) .pj-filter-count {
+          background: var(--surface-strong);
+          color: var(--muted);
+        }
 
-        .filter-btn {
+        .pj-search {
           display: inline-flex;
           align-items: center;
           gap: 0.5rem;
-          padding: 0.55rem 0.9rem;
-          border: 1px solid rgba(148, 163, 184, 0.28);
+          padding: 0.5rem 0.9rem;
           border-radius: 999px;
-          background: rgba(15, 23, 42, 0.9);
-          color: #cbd5e1;
-          font-size: 0.875rem;
-          font-weight: 600;
+          border: 1px solid var(--border);
+          background: var(--surface);
+          color: var(--muted);
+          min-width: 240px;
         }
-
-        .filter-btn.active {
-          border-color: #22d3ee;
-          background: rgba(8, 145, 178, 0.18);
-          color: #f8fafc;
+        .pj-search input {
+          background: transparent;
+          border: none;
+          outline: none;
+          color: var(--text);
+          font-size: 0.9rem;
+          width: 100%;
         }
+        .pj-search input::placeholder { color: var(--muted); }
+        .pj-search:focus-within { border-color: var(--accent); }
 
-        .filter-count {
-          min-width: 1.35rem;
-          height: 1.35rem;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 999px;
-          background: rgba(255, 255, 255, 0.12);
-          color: #e2e8f0;
-          font-size: 0.75rem;
-        }
-
-        .projects-grid {
+        .pj-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-          gap: 1rem;
-          align-items: stretch;
+          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+          gap: 1.25rem;
         }
 
-        .project-card {
+        .pj-card {
           display: flex;
           flex-direction: column;
-          min-height: 100%;
           overflow: hidden;
-          border: 1px solid rgba(148, 163, 184, 0.18);
-          border-radius: 10px;
-          background: rgba(15, 23, 42, 0.94);
-          contain: layout paint style;
         }
-
-        .project-card:hover {
-          border-color: rgba(34, 211, 238, 0.45);
-        }
-
-        .image-container {
+        .pj-cover {
           position: relative;
-          height: 132px;
-          overflow: hidden;
-          background: #111827;
+          height: 140px;
         }
-
-        .project-image {
-          width: 100%;
-          height: 100%;
-          display: block;
-          object-fit: cover;
-        }
-
-        .status-badge {
+        .pj-featured {
           position: absolute;
-          left: 0.65rem;
-          top: 0.65rem;
-          padding: 0.25rem 0.55rem;
+          top: 0.7rem;
+          right: 0.7rem;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.3rem;
+          padding: 0.28rem 0.55rem;
           border-radius: 999px;
-          background: rgba(15, 23, 42, 0.82);
-          border: 1px solid rgba(255, 255, 255, 0.16);
-          color: #e2e8f0;
           font-size: 0.68rem;
           font-weight: 700;
+          color: #fff;
+          background: rgba(0,0,0,0.42);
+          border: 1px solid rgba(255,255,255,0.28);
+          backdrop-filter: blur(4px);
         }
-
-        .status-badge.live {
-          color: #86efac;
-        }
-
-        .status-badge.completed {
-          color: #93c5fd;
-        }
-
-        .project-content {
+        .pj-body {
           display: flex;
           flex: 1;
           flex-direction: column;
-          padding: 0.9rem;
+          padding: 1.05rem 1.1rem 1.1rem;
         }
-
-        .project-heading {
+        .pj-top {
           display: flex;
           align-items: flex-start;
           justify-content: space-between;
           gap: 0.75rem;
           margin-bottom: 0.55rem;
         }
-
-        .project-title {
-          color: #f8fafc;
-          font-size: 1rem;
-          line-height: 1.3;
-          font-weight: 750;
-        }
-
-        .featured-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.25rem;
-          flex-shrink: 0;
-          padding: 0.25rem 0.45rem;
-          border-radius: 999px;
-          background: rgba(139, 92, 246, 0.18);
-          color: #ddd6fe;
-          font-size: 0.65rem;
+        .pj-title {
+          font-family: "Sora", sans-serif;
           font-weight: 700;
+          font-size: 1.05rem;
+          line-height: 1.25;
+          color: var(--text);
         }
-
-        .project-meta {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.75rem;
-          margin-bottom: 0.65rem;
-          color: #94a3b8;
-          font-size: 0.78rem;
-        }
-
-        .project-meta span {
+        .pj-meta {
           display: inline-flex;
           align-items: center;
-          gap: 0.28rem;
+          gap: 0.3rem;
+          flex-shrink: 0;
+          font-size: 0.75rem;
+          color: var(--muted);
+          font-family: "JetBrains Mono", monospace;
         }
-
-        .project-description {
-          color: #cbd5e1;
-          font-size: 0.82rem;
-          line-height: 1.5;
-          margin-bottom: 0.8rem;
+        .pj-desc {
+          color: var(--muted);
+          font-size: 0.85rem;
+          line-height: 1.55;
+          margin-bottom: 0.9rem;
           display: -webkit-box;
           -webkit-line-clamp: 3;
           -webkit-box-orient: vertical;
           overflow: hidden;
         }
-
-        .tech-stack {
+        .pj-tech {
           display: flex;
           flex-wrap: wrap;
           gap: 0.4rem;
-          margin-bottom: 0.9rem;
+          margin-bottom: 1rem;
         }
-
-        .tech-tag,
-        .tech-more {
-          padding: 0.22rem 0.5rem;
-          border: 1px solid rgba(34, 211, 238, 0.22);
-          border-radius: 999px;
-          background: rgba(8, 145, 178, 0.12);
-          color: #bae6fd;
-          font-size: 0.7rem;
-          font-weight: 600;
-        }
-
-        .tech-more {
-          border-color: rgba(148, 163, 184, 0.22);
-          background: rgba(148, 163, 184, 0.12);
-          color: #cbd5e1;
-        }
-
-        .project-footer {
+        .pj-foot {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 1rem;
+          gap: 0.75rem;
           margin-top: auto;
         }
-
-        .category-tag {
-          color: #94a3b8;
+        .pj-cat {
+          font-family: "JetBrains Mono", monospace;
           font-size: 0.72rem;
-          font-weight: 700;
-          text-transform: capitalize;
+          font-weight: 600;
         }
+        .pj-cat--fullstack { color: #67e8f9; }
+        .pj-cat--ai { color: #c4b5fd; }
+        .pj-cat--backend { color: #6ee7b7; }
+        .pj-cat--frontend { color: #fcd34d; }
+        .pj-cat--mobile { color: #5eead4; }
+        html.light .pj-cat--fullstack { color: #0e7490; }
+        html.light .pj-cat--ai { color: #6d28d9; }
+        html.light .pj-cat--backend { color: #047857; }
+        html.light .pj-cat--frontend { color: #b45309; }
+        html.light .pj-cat--mobile { color: #0f766e; }
 
-        .category-tag.fullstack {
-          color: #86efac;
-        }
-
-        .category-tag.frontend {
-          color: #93c5fd;
-        }
-
-        .category-tag.backend {
-          color: #fdba74;
-        }
-
-        .action-links {
-          display: flex;
-          align-items: center;
-          gap: 0.35rem;
-        }
-
-        .link-btn {
-          width: 2rem;
-          height: 2rem;
+        .pj-links { display: inline-flex; gap: 0.4rem; }
+        .pj-link {
           display: inline-flex;
           align-items: center;
-          justify-content: center;
-          border-radius: 8px;
-          background: rgba(255, 255, 255, 0.06);
-          color: #cbd5e1;
+          gap: 0.3rem;
+          padding: 0.4rem 0.7rem;
+          border-radius: 999px;
+          font-size: 0.78rem;
+          font-weight: 600;
+          color: var(--text-soft);
+          background: var(--surface-strong);
+          border: 1px solid var(--border);
+          text-decoration: none;
+          transition: all 0.2s ease;
+        }
+        .pj-link:hover { color: var(--text); border-color: var(--accent); }
+        .pj-link--demo {
+          color: #05070d;
+          background: var(--grad);
+          border-color: transparent;
+        }
+        .pj-link--demo:hover { color: #05070d; transform: translateY(-1px); }
+
+        .pj-empty {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 3rem 1rem;
+          border-radius: 18px;
+          color: var(--muted);
+          text-align: center;
         }
 
-        .link-btn:hover {
-          color: #ffffff;
-          background: rgba(34, 211, 238, 0.16);
+        .pj-cta {
+          display: flex;
+          justify-content: center;
+          margin-top: 2.5rem;
         }
 
         @media (max-width: 640px) {
-          .projects-section {
-            padding: 3rem 0;
-          }
-
-          .projects-container {
-            padding: 0 0 0 1rem;
-          }
-
-          .projects-grid {
-            display: flex;
-            gap: 1rem;
-            overflow-x: auto;
-            padding: 0 1rem 0.75rem 0;
-            scroll-padding-left: 1rem;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch;
-          }
-
-          .projects-grid::-webkit-scrollbar {
-            display: none;
-          }
-
-          .project-card {
-            flex: 0 0 calc(100vw - 2rem);
-            scroll-snap-align: start;
-          }
+          .pj-section { padding: 4rem 0; }
+          .pj-search { width: 100%; }
+          .pj-grid { grid-template-columns: 1fr; }
         }
       `}</style>
     </section>
