@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Github, Linkedin, Menu, X } from 'lucide-react';
+
+const navItems = ['home', 'about', 'projects', 'contact'];
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -7,256 +9,183 @@ const Header = () => {
 
   useEffect(() => {
     let ticking = false;
-
     const handleScroll = () => {
       if (ticking) return;
-
       ticking = true;
       requestAnimationFrame(() => {
-        setScrolled(window.scrollY > 50);
+        setScrolled(window.scrollY > 40);
         ticking = false;
       });
     };
-
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const toggleMenu = () => setMenuOpen(!menuOpen);
-
-  const navItems = ['home', 'about', 'projects', 'contact'];
+  const go = (id) => {
+    const section = document.getElementById(id);
+    if (section) section.scrollIntoView({ behavior: 'smooth' });
+    setMenuOpen(false);
+  };
 
   return (
-    <header className={`fixed top-0 w-full z-50 transition-all duration-500 ${
-      scrolled 
-        ? 'bg-black/90 backdrop-blur-md border-b border-purple-500/20 shadow-lg shadow-purple-500/10' 
-        : 'bg-transparent'
-    }`}>
-      <div className="flex justify-between items-center max-w-7xl mx-auto px-6 py-4">
-        <div className="relative group">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 via-cyan-400 to-emerald-300 bg-clip-text text-transparent">
-            &lt; Firoz /&gt;
-          </h1>
-          <div className="absolute -inset-2 bg-gradient-to-r from-purple-600 to-cyan-600 rounded-lg blur opacity-0 group-hover:opacity-30 transition duration-1000"></div>
-        </div>
+    <header className={`hdr ${scrolled ? 'is-scrolled' : ''}`}>
+      <div className="hdr-inner">
+        <button type="button" className="hdr-logo font-mono" onClick={() => go('home')}>
+          <span className="grad-text">&lt;Firoz/&gt;</span>
+        </button>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex space-x-8">
+        <nav className="hdr-nav" aria-label="Primary">
           {navItems.map((item) => (
-            <button
-              key={item}
-              onClick={() => {
-                const section = document.getElementById(item);
-                if (section) {
-                  section.scrollIntoView({ behavior: 'smooth' });
-                }
-              }}
-              className="relative cursor-pointer text-gray-300 hover:text-white transition-all duration-300 group py-2"
-            >
-              <span className="relative z-10 font-medium">
-                {item.charAt(0).toUpperCase() + item.slice(1)}
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-cyan-600 rounded-lg transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left opacity-20"></div>
-              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-400 to-cyan-400 group-hover:w-full transition-all duration-300"></div>
+            <button key={item} type="button" className="hdr-link" onClick={() => go(item)}>
+              {item.charAt(0).toUpperCase() + item.slice(1)}
             </button>
           ))}
         </nav>
 
-        {/* Mobile Menu Button */}
-        <div className="md:hidden">
+        <div className="hdr-actions">
+          <a href="https://github.com/firoz1860" target="_blank" rel="noopener noreferrer" className="hdr-icon" aria-label="GitHub">
+            <Github className="w-4.5 h-4.5" />
+          </a>
+          <a href="https://www.linkedin.com/in/firoz-ahmad-020166251" target="_blank" rel="noopener noreferrer" className="hdr-icon" aria-label="LinkedIn">
+            <Linkedin className="w-4.5 h-4.5" />
+          </a>
+          <button type="button" className="btn btn-primary hdr-cta" onClick={() => go('contact')}>
+            Let’s talk
+          </button>
           <button
-            onClick={toggleMenu}
-            className="relative w-10 h-10 flex items-center justify-center text-purple-400 focus:outline-none group"
+            type="button"
+            className="hdr-burger"
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
           >
-            <div className="absolute inset-0 bg-purple-500/20 rounded-lg transform scale-0 group-hover:scale-100 transition-transform duration-200"></div>
-            {menuOpen ? <X size={24} className="relative z-10" /> : <Menu size={24} className="relative z-10" />}
+            {menuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Navigation */}
-      <div className={`md:hidden bg-black/95 backdrop-blur-md transition-all duration-500 ease-in-out ${
-        menuOpen 
-          ? 'max-h-80 opacity-100 border-b border-purple-500/20' 
-          : 'max-h-0 opacity-0 overflow-hidden'
-      }`}>
-        <div className="px-6 py-4 space-y-4">
-          {navItems.map((item) => (
-            <button
-              key={item}
-              onClick={() => {
-                const section = document.getElementById(item);
-                if (section) {
-                  section.scrollIntoView({ behavior: 'smooth' });
-                }
-                toggleMenu();
-              }}
-              className="block relative group cursor-pointer w-full text-left"
-            >
-              <div className="flex items-center space-x-3 py-3 px-4 rounded-lg hover:bg-purple-500/10 transition-all duration-300">
-                <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-cyan-400 rounded-full transform scale-0 group-hover:scale-100 transition-transform duration-300"></div>
-                <span className="text-gray-300 group-hover:text-white font-medium">
-                  {item.charAt(0).toUpperCase() + item.slice(1)}
-                </span>
-              </div>
-            </button>
-          ))}
-        </div>
+      <div className={`hdr-mobile ${menuOpen ? 'is-open' : ''}`}>
+        {navItems.map((item) => (
+          <button key={item} type="button" className="hdr-mobile-link" onClick={() => go(item)}>
+            {item.charAt(0).toUpperCase() + item.slice(1)}
+          </button>
+        ))}
       </div>
+
+      <style>{`
+        .hdr {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          z-index: 50;
+          transition: background 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease;
+          border-bottom: 1px solid transparent;
+        }
+        .hdr.is-scrolled {
+          background: color-mix(in srgb, var(--bg) 72%, transparent);
+          backdrop-filter: blur(14px);
+          border-bottom-color: var(--border);
+        }
+        .hdr-inner {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0.9rem 1.25rem;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 1rem;
+        }
+        .hdr-logo {
+          background: none;
+          border: none;
+          cursor: pointer;
+          font-size: 1.25rem;
+          font-weight: 700;
+          padding: 0;
+        }
+        .hdr-nav {
+          display: none;
+          gap: 0.35rem;
+        }
+        .hdr-link {
+          background: none;
+          border: none;
+          cursor: pointer;
+          color: var(--text-soft);
+          font-size: 0.92rem;
+          font-weight: 500;
+          padding: 0.45rem 0.85rem;
+          border-radius: 999px;
+          transition: color 0.2s ease, background 0.2s ease;
+        }
+        .hdr-link:hover { color: var(--text); background: var(--surface); }
+        .hdr-actions { display: flex; align-items: center; gap: 0.5rem; }
+        .hdr-icon {
+          display: none;
+          width: 2.3rem;
+          height: 2.3rem;
+          align-items: center;
+          justify-content: center;
+          border-radius: 999px;
+          color: var(--text-soft);
+          border: 1px solid var(--border);
+          background: var(--surface);
+          transition: all 0.2s ease;
+        }
+        .hdr-icon:hover { color: var(--text); border-color: var(--accent); }
+        .hdr-cta { display: none; padding: 0.55rem 1.1rem; font-size: 0.9rem; }
+        .hdr-burger {
+          display: inline-flex;
+          background: var(--surface);
+          border: 1px solid var(--border);
+          color: var(--text);
+          width: 2.5rem;
+          height: 2.5rem;
+          align-items: center;
+          justify-content: center;
+          border-radius: 12px;
+          cursor: pointer;
+        }
+        .hdr-mobile {
+          display: flex;
+          flex-direction: column;
+          gap: 0.25rem;
+          max-height: 0;
+          overflow: hidden;
+          opacity: 0;
+          transition: max-height 0.35s ease, opacity 0.25s ease;
+          background: color-mix(in srgb, var(--bg) 92%, transparent);
+          backdrop-filter: blur(14px);
+        }
+        .hdr-mobile.is-open {
+          max-height: 320px;
+          opacity: 1;
+          border-bottom: 1px solid var(--border);
+          padding: 0.75rem 1.25rem 1rem;
+        }
+        .hdr-mobile-link {
+          text-align: left;
+          background: none;
+          border: none;
+          color: var(--text-soft);
+          font-size: 1rem;
+          font-weight: 500;
+          padding: 0.7rem 0.75rem;
+          border-radius: 10px;
+          cursor: pointer;
+        }
+        .hdr-mobile-link:hover { background: var(--surface); color: var(--text); }
+
+        @media (min-width: 860px) {
+          .hdr-nav { display: flex; }
+          .hdr-icon { display: inline-flex; }
+          .hdr-cta { display: inline-flex; }
+          .hdr-burger { display: none; }
+        }
+      `}</style>
     </header>
   );
 };
 
 export default Header;
-
-
-// import React, { useState, useEffect } from 'react';
-// import { Link } from 'react-scroll';
-// import { Menu, X } from 'lucide-react';
-
-// const Header = () => {
-//   const [menuOpen, setMenuOpen] = useState(false);
-//   const [scrolled, setScrolled] = useState(false);
-
-//   useEffect(() => {
-//     const handleScroll = () => {
-//       setScrolled(window.scrollY > 50);
-//     };
-
-//     window.addEventListener('scroll', handleScroll);
-//     return () => window.removeEventListener('scroll', handleScroll);
-//   }, []);
-
-//   const toggleMenu = () => setMenuOpen(!menuOpen);
-
-//   const navItems = ['home', 'about', 'projects', 'contact'];
-
-//   return (
-//     <header className={`fixed top-0 w-full z-50 transition-all duration-500 ${
-//       scrolled 
-//         ? 'bg-black/90 backdrop-blur-md border-b border-purple-500/20 shadow-lg shadow-purple-500/10' 
-//         : 'bg-transparent'
-//     }`}>
-//       <div className="flex justify-between items-center max-w-7xl mx-auto px-6 py-4">
-//         <div className="relative group">
-//           <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent animate-pulse">
-//             &lt; Firoz /&gt;
-//           </h1>
-//           <div className="absolute -inset-2 bg-gradient-to-r from-purple-600 to-cyan-600 rounded-lg blur opacity-0 group-hover:opacity-30 transition duration-1000"></div>
-//         </div>
-
-//         {/* Desktop Navigation */}
-//         <nav className="hidden md:flex space-x-8">
-//           {navItems.map((item, index) => (
-//             <Link
-//               key={item}
-//               to={item}
-//               smooth={true}
-//               duration={800}
-//               className="relative cursor-pointer text-gray-300 hover:text-white transition-all duration-300 group py-2"
-//               style={{ animationDelay: `${index * 100}ms` }}
-//             >
-//               <span className="relative z-10 font-medium">
-//                 {item.charAt(0).toUpperCase() + item.slice(1)}
-//               </span>
-//               <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-cyan-600 rounded-lg transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left opacity-20"></div>
-//               <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-400 to-cyan-400 group-hover:w-full transition-all duration-300"></div>
-//             </Link>
-//           ))}
-//         </nav>
-
-//         {/* Mobile Menu Button */}
-//         <div className="md:hidden">
-//           <button
-//             onClick={toggleMenu}
-//             className="relative w-10 h-10 flex items-center justify-center text-purple-400 focus:outline-none group"
-//           >
-//             <div className="absolute inset-0 bg-purple-500/20 rounded-lg transform scale-0 group-hover:scale-100 transition-transform duration-200"></div>
-//             {menuOpen ? <X size={24} className="relative z-10" /> : <Menu size={24} className="relative z-10" />}
-//           </button>
-//         </div>
-//       </div>
-
-//       {/* Mobile Navigation */}
-//       <div className={`md:hidden bg-black/95 backdrop-blur-md transition-all duration-500 ease-in-out ${
-//         menuOpen 
-//           ? 'max-h-80 opacity-100 border-b border-purple-500/20' 
-//           : 'max-h-0 opacity-0 overflow-hidden'
-//       }`}>
-//         <div className="px-6 py-4 space-y-4">
-//           {navItems.map((item, index) => (
-//             <Link
-//               key={item}
-//               to={item}
-//               smooth={true}
-//               duration={800}
-//               onClick={toggleMenu}
-//               className="block relative group cursor-pointer"
-//               style={{ animationDelay: `${index * 100}ms` }}
-//             >
-//               <div className="flex items-center space-x-3 py-3 px-4 rounded-lg hover:bg-purple-500/10 transition-all duration-300">
-//                 <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-cyan-400 rounded-full transform scale-0 group-hover:scale-100 transition-transform duration-300"></div>
-//                 <span className="text-gray-300 group-hover:text-white font-medium">
-//                   {item.charAt(0).toUpperCase() + item.slice(1)}
-//                 </span>
-//               </div>
-//             </Link>
-//           ))}
-//         </div>
-//       </div>
-//     </header>
-//   );
-// };
-
-// export default Header;
-
-
-
-// // src/components/Header.js
-// import React, { useState } from 'react';
-// import { Link } from 'react-scroll';
-// import { Menu, X } from 'lucide-react';
-
-// const Header = () => {
-//   const [menuOpen, setMenuOpen] = useState(false);
-
-//   const toggleMenu = () => setMenuOpen(!menuOpen);
-
-//   return (
-//     <header className="sticky top-0 bg-black z-50 p-4 shadow-md">
-//       <div className="flex justify-between items-center max-w-6xl mx-auto">
-//         <h1 className="text-xl font-bold text-purple-500">&lt; Firoz /&gt;</h1>
-
-//         {/* Desktop Nav */}
-//         <nav className="space-x-4 hidden md:block">
-//           <Link to="home" smooth={true} duration={500} className="cursor-pointer hover:text-purple-400 transition duration-300 ease-in-out">Home</Link>
-//           <Link to="about" smooth={true} duration={500} className="cursor-pointer hover:text-purple-400 transition duration-300 ease-in-out">About</Link>
-//           <Link to="projects" smooth={true} duration={500} className="cursor-pointer hover:text-purple-400 transition duration-300 ease-in-out">Projects</Link>
-//           <Link to="contact" smooth={true} duration={500} className="cursor-pointer hover:text-purple-400 transition duration-300 ease-in-out">Contact</Link>
-//         </nav>
-
-//         {/* Mobile Menu Icon */}
-//         <div className="md:hidden">
-//           <button onClick={toggleMenu} className="text-purple-400 focus:outline-none">
-//             {menuOpen ? <X size={24} /> : <Menu size={24} />}
-//           </button>
-//         </div>
-//       </div>
-
-//       {/* Mobile Nav Dropdown */}
-//       <div
-//         className={`md:hidden bg-black px-4 pt-4 pb-2 space-y-2 transition-all duration-500 ease-in-out overflow-hidden ${
-//           menuOpen ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'
-//         }`}
-//       >
-//         <Link to="home" smooth={true} duration={500} onClick={toggleMenu} className="block text-white hover:text-purple-400">Home</Link>
-//         <Link to="about" smooth={true} duration={500} onClick={toggleMenu} className="block text-white hover:text-purple-400">About</Link>
-//         <Link to="projects" smooth={true} duration={500} onClick={toggleMenu} className="block text-white hover:text-purple-400">Projects</Link>
-//         <Link to="contact" smooth={true} duration={500} onClick={toggleMenu} className="block text-white hover:text-purple-400">Contact</Link>
-//       </div>
-//     </header>
-//   );
-// };
-
-// export default Header;
-
