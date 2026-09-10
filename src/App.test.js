@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import App from './App';
 
 // IntersectionObserver is not implemented in jsdom; provide a no-op stub so
@@ -14,12 +14,12 @@ beforeAll(() => {
   };
 });
 
-test('renders the hero with the developer name', () => {
-  render(<App />);
+test('renders the hero with the developer name', async () => {
+  await act(async () => { render(<App />); });
   expect(screen.getAllByText(/Firoz Ahmad/i).length).toBeGreaterThan(0);
 });
 
-test('renders the primary call-to-action', () => {
-  render(<App />);
+test('renders the primary call-to-action', async () => {
+  await act(async () => { render(<App />); });
   expect(screen.getByText(/view my work/i)).toBeInTheDocument();
 });

@@ -25,11 +25,15 @@ const Contact = () => {
     e.preventDefault();
     setStatus('loading');
     try {
+      const serviceId = process.env.REACT_APP_EMAILJS_SERVICE_ID;
+      const templateId = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
+      const publicKey = process.env.REACT_APP_EMAILJS_PUBLIC_KEY;
+
       await emailjs.sendForm(
-        'service_uufzalm',
-        'template_z7psnof',
+        serviceId,
+        templateId,
         form.current,
-        'IxGoeqXhmuZbQcqxf'
+        publicKey
       );
       setStatus('success');
       setFormData({ name: '', email: '', message: '' });
