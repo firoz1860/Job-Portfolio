@@ -1,9 +1,10 @@
-import React, { memo, useMemo, useState } from "react";
-import { ArrowUpRight, Calendar, Github, Search, Sparkles, Star, Zap } from "lucide-react";
+import React, { memo, useEffect, useMemo, useState } from "react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, Calendar, Github, Search, Sparkles, Star, Zap } from "lucide-react";
 import projects from "../data/projects";
 import ProjectCover from "./ProjectCover.jsx";
 
 const GITHUB_URL = "https://github.com/firoz1860?tab=repositories";
+const PAGE_SIZE = 10;
 
 // Order the highlighted band exactly as requested — the standout, live builds.
 const HIGHLIGHT_ORDER = [
@@ -112,6 +113,7 @@ const ProjectCard = memo(({ project, highlight = false }) => (
 const Projects = () => {
   const [filter, setFilter] = useState("all");
   const [query, setQuery] = useState("");
+  const [page, setPage] = useState(1);
 
   const counts = useMemo(
     () =>
@@ -147,6 +149,17 @@ const Projects = () => {
   );
 
   const showHighlights = filter === "all" && !query.trim() && highlighted.length > 0;
+
+  // Pagination for the main grid only — the highlighted band is never paginated.
+  useEffect(() => {
+    setPage(1);
+  }, [filter, query]);
+
+  const totalPages = Math.max(1, Math.ceil(visible.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const pageStart = (currentPage - 1) * PAGE_SIZE;
+  const pageItems = visible.slice(pageStart, pageStart + PAGE_SIZE);
+  const showPager = visible.length > PAGE_SIZE;
 
   return (
     <section id="projects" className="pj-section aurora">
@@ -211,11 +224,56 @@ const Projects = () => {
         </div>
 
         {visible.length > 0 ? (
-          <div className="pj-grid">
-            {visible.map((p) => (
-              <ProjectCard key={p.repo} project={p} />
-            ))}
-          </div>
+          <>
+            <div className="pj-grid">
+              {pageItems.map((p) => (
+                <ProjectCard key={p.repo} project={p} />
+              ))}
+            </div>
+
+            {showPager && (
+              <nav className="pj-pager" aria-label="Projects pagination">
+                <button
+                  type="button"
+                  className="pj-page-btn"
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  Prev
+                </button>
+
+                <div className="pj-page-nums">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
+                    <button
+                      key={n}
+                      type="button"
+                      className={`pj-page-num ${n === currentPage ? "is-active" : ""}`}
+                      onClick={() => setPage(n)}
+                      aria-current={n === currentPage ? "page" : undefined}
+                      aria-label={`Page ${n}`}
+                    >
+                      {n}
+                    </button>
+                  ))}
+                </div>
+
+                <span className="pj-page-status text-muted">
+                  {pageStart + 1}–{Math.min(pageStart + PAGE_SIZE, visible.length)} of {visible.length}
+                </span>
+
+                <button
+                  type="button"
+                  className="pj-page-btn"
+                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </nav>
+            )}
+          </>
         ) : (
           <div className="pj-empty surface">
             <Sparkles className="w-6 h-6" />
@@ -534,6 +592,63 @@ const Projects = () => {
           display: flex;
           justify-content: center;
           margin-top: 2.5rem;
+        }
+
+        /* ===== Pagination ===== */
+        .pj-pager {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: center;
+          gap: 0.6rem;
+          margin-top: 2rem;
+        }
+        .pj-page-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          padding: 0.5rem 0.95rem;
+          border-radius: 999px;
+          border: 1px solid var(--border);
+          background: var(--surface);
+          color: var(--text-soft);
+          font-size: 0.85rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+        }
+        .pj-page-btn:hover:not(:disabled) { color: var(--text); border-color: var(--accent); }
+        .pj-page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .pj-page-nums { display: inline-flex; flex-wrap: wrap; gap: 0.3rem; }
+        .pj-page-num {
+          min-width: 2.1rem;
+          height: 2.1rem;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0 0.4rem;
+          border-radius: 999px;
+          border: 1px solid var(--border);
+          background: var(--surface);
+          color: var(--text-soft);
+          font-size: 0.82rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+        }
+        .pj-page-num:hover { color: var(--text); border-color: var(--border-strong); }
+        .pj-page-num.is-active {
+          color: #05070d;
+          background: var(--grad);
+          border-color: transparent;
+        }
+        .pj-page-status {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 0.78rem;
+          margin: 0 0.25rem;
+        }
+        @media (max-width: 560px) {
+          .pj-page-status { width: 100%; text-align: center; order: 3; }
         }
 
         @media (max-width: 640px) {
