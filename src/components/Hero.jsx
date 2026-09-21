@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail, Download, FileText, MapPin } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail, Download, FileText, MapPin, Briefcase } from 'lucide-react';
 
 const scrollTo = (id) => {
   const section = document.getElementById(id);
@@ -32,6 +32,17 @@ const resumes = [
     file: `${base}/Firoz_Ahmad_Resume_India.pdf`,
     download: 'Firoz_Ahmad_Resume_India.pdf',
   },
+];
+
+const jobs = [
+  { company: 'AfterQuery Experts', role: 'Software Engineer', period: '2026' },
+  { company: 'Handshake AI Fellowship', role: 'Expert Contributor', period: '2026' },
+  { company: 'Creative Business Labs', role: 'Full Stack Developer', period: '2024–25' },
+];
+
+const liveWork = [
+  { name: 'Cope Ahead', tagline: 'Mental Wellness Platform', url: 'https://copeahead.com/' },
+  { name: 'Agency Connect Hub', tagline: 'Multi-tenant Agency Portal', url: 'https://agencyconnecthub.com/' },
 ];
 
 const Hero = () => {
@@ -148,6 +159,45 @@ const Hero = () => {
               </div>
             </div>
           </div>
+
+          {/* Employment card — visible to every visitor */}
+          <div className="hero-card hero-jobs card">
+            <p className="hero-jobs-title font-mono text-muted">
+              <Briefcase className="w-4 h-4" aria-hidden="true" />
+              Employment
+            </p>
+
+            <ul className="hero-jobs-list">
+              {jobs.map((j) => (
+                <li key={j.company} className="hero-job">
+                  <span className="hero-job-co text-app">{j.company}</span>
+                  <span className="hero-job-meta text-muted">{j.role} · {j.period}</span>
+                </li>
+              ))}
+            </ul>
+
+            <p className="hero-jobs-sub font-mono text-muted">Live work</p>
+            <div className="hero-jobs-links">
+              {liveWork.map((w) => (
+                <a
+                  key={w.url}
+                  href={w.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hero-job-link"
+                  title={w.tagline}
+                >
+                  <span className="hero-job-link-name text-app">{w.name}</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 hero-job-link-icon" aria-hidden="true" />
+                </a>
+              ))}
+            </div>
+
+            <button type="button" className="hero-jobs-all font-mono" onClick={() => scrollTo('experience')}>
+              View full timeline
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </aside>
       </div>
 
@@ -261,6 +311,9 @@ const Hero = () => {
           justify-self: center;
           width: 100%;
           max-width: 380px;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
         }
         .hero-card {
           padding: 1.5rem;
@@ -356,6 +409,81 @@ const Hero = () => {
         .hero-resume-btn-label { font-size: 0.92rem; font-weight: 600; }
         .hero-resume-btn-hint { font-size: 0.74rem; }
         .hero-resume-btn-icon { color: var(--accent); flex-shrink: 0; }
+
+        /* ===== Employment card ===== */
+        .hero-jobs { padding: 1.35rem 1.5rem; }
+        .hero-jobs:hover { transform: none; }
+        .hero-jobs-title {
+          display: flex;
+          align-items: center;
+          gap: 0.45rem;
+          font-size: 0.72rem;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          margin: 0 0 0.9rem;
+        }
+        .hero-jobs-list {
+          list-style: none;
+          margin: 0 0 1.1rem;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 0.7rem;
+        }
+        .hero-job {
+          display: flex;
+          flex-direction: column;
+          gap: 0.1rem;
+          padding-left: 0.85rem;
+          border-left: 2px solid var(--border-strong);
+        }
+        .hero-job-co { font-size: 0.9rem; font-weight: 600; line-height: 1.25; }
+        .hero-job-meta { font-size: 0.76rem; }
+        .hero-jobs-sub {
+          font-size: 0.68rem;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          margin: 0 0 0.6rem;
+        }
+        .hero-jobs-links {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          margin-bottom: 1rem;
+        }
+        .hero-job-link {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 0.6rem;
+          padding: 0.6rem 0.8rem;
+          border-radius: 12px;
+          border: 1px solid var(--border);
+          background: var(--surface);
+          text-decoration: none;
+          transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+        .hero-job-link:hover {
+          transform: translateY(-2px);
+          border-color: var(--accent);
+          background: var(--surface-strong);
+        }
+        .hero-job-link:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
+        .hero-job-link-name { font-size: 0.88rem; font-weight: 600; }
+        .hero-job-link-icon { color: var(--accent); flex-shrink: 0; }
+        .hero-jobs-all {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          background: none;
+          border: none;
+          padding: 0;
+          cursor: pointer;
+          color: var(--accent);
+          font-size: 0.78rem;
+          font-weight: 600;
+        }
+        .hero-jobs-all:hover { text-decoration: underline; }
 
         .hero-scroll {
           position: absolute;
