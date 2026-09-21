@@ -1,9 +1,18 @@
 import React, { memo, useMemo, useState } from "react";
-import { ArrowUpRight, Calendar, Github, Search, Sparkles, Star } from "lucide-react";
+import { ArrowUpRight, Calendar, Github, Search, Sparkles, Star, Zap } from "lucide-react";
 import projects from "../data/projects";
 import ProjectCover from "./ProjectCover.jsx";
 
 const GITHUB_URL = "https://github.com/firoz1860?tab=repositories";
+
+// Order the highlighted band exactly as requested — the standout, live builds.
+const HIGHLIGHT_ORDER = [
+  "drivevault",
+  "DocOnGo-Frontend",
+  "ai-resume-job-assistant",
+  "tradeflow",
+  "finance-dashboard-frontend",
+];
 
 const filters = [
   { key: "all", label: "All" },
@@ -22,11 +31,23 @@ const categoryLabel = {
   mobile: "Mobile",
 };
 
-const ProjectCard = memo(({ project }) => (
-  <article className="pj-card card">
+const ProjectCard = memo(({ project, highlight = false }) => (
+  <article className={`pj-card card ${highlight ? "pj-card--hl" : ""}`}>
     <div className="pj-cover">
       <ProjectCover project={project} />
-      {project.featured && (
+      {highlight && (
+        <span className="pj-hl-badge">
+          <Star className="w-3 h-3" fill="currentColor" />
+          Highlight
+        </span>
+      )}
+      {highlight && project.demo && (
+        <span className="pj-live-badge">
+          <span className="pj-live-dot" />
+          Live
+        </span>
+      )}
+      {!highlight && project.featured && (
         <span className="pj-featured">
           <Star className="w-3 h-3" fill="currentColor" />
           Featured
@@ -116,6 +137,16 @@ const Projects = () => {
 
   const liveCount = useMemo(() => projects.filter((p) => p.demo).length, []);
 
+  const highlighted = useMemo(
+    () =>
+      HIGHLIGHT_ORDER.map((repo) => projects.find((p) => p.repo === repo)).filter(
+        Boolean
+      ),
+    []
+  );
+
+  const showHighlights = filter === "all" && !query.trim() && highlighted.length > 0;
+
   return (
     <section id="projects" className="pj-section aurora">
       <div className="pj-container">
@@ -130,6 +161,25 @@ const Projects = () => {
             straight to the source and, where available, a deployed build.
           </p>
         </header>
+
+        {showHighlights && (
+          <div className="pj-highlights">
+            <div className="pj-hl-head">
+              <span className="pj-hl-eyebrow">
+                <Zap className="w-4 h-4" fill="currentColor" />
+                Highlighted — start here
+              </span>
+              <p className="pj-hl-note text-muted">
+                My standout, live builds — click <strong>Live</strong> to open the deployed app.
+              </p>
+            </div>
+            <div className="pj-hl-grid">
+              {highlighted.map((p) => (
+                <ProjectCard key={`hl-${p.repo}`} project={p} highlight />
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="pj-controls">
           <div className="pj-filters" role="tablist" aria-label="Filter projects by category">
@@ -273,6 +323,83 @@ const Projects = () => {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
           gap: 1.25rem;
+        }
+
+        /* ===== Highlighted band ===== */
+        .pj-highlights {
+          margin-bottom: 2.5rem;
+          padding: 1.5rem;
+          border-radius: 20px;
+          border: 1px solid var(--border-strong);
+          background:
+            radial-gradient(120% 100% at 0% 0%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 60%),
+            var(--surface);
+        }
+        .pj-hl-head { margin-bottom: 1.25rem; }
+        .pj-hl-eyebrow {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.45rem;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 0.8rem;
+          font-weight: 700;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: var(--accent);
+        }
+        .pj-hl-note { font-size: 0.9rem; margin-top: 0.45rem; }
+        .pj-hl-note strong { color: var(--text); }
+        .pj-hl-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+          gap: 1.25rem;
+        }
+        .pj-card--hl {
+          border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+          box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 40%, transparent),
+            0 18px 44px -24px var(--accent);
+        }
+        .pj-card--hl:hover {
+          border-color: var(--accent);
+          box-shadow: 0 0 0 1px var(--accent), 0 22px 50px -22px var(--accent);
+        }
+        .pj-hl-badge {
+          position: absolute;
+          top: 0.7rem;
+          left: 0.7rem;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.3rem;
+          padding: 0.28rem 0.6rem;
+          border-radius: 999px;
+          font-size: 0.68rem;
+          font-weight: 800;
+          color: #05070d;
+          background: var(--grad);
+          box-shadow: 0 8px 20px -10px var(--accent);
+        }
+        .pj-live-badge {
+          position: absolute;
+          top: 0.7rem;
+          right: 0.7rem;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          padding: 0.28rem 0.6rem;
+          border-radius: 999px;
+          font-size: 0.68rem;
+          font-weight: 700;
+          color: #fff;
+          background: rgba(0,0,0,0.5);
+          border: 1px solid rgba(255,255,255,0.28);
+          backdrop-filter: blur(4px);
+        }
+        .pj-live-dot {
+          width: 0.45rem;
+          height: 0.45rem;
+          border-radius: 999px;
+          background: #34d399;
+          box-shadow: 0 0 0 3px rgba(52,211,153,0.3);
         }
 
         .pj-card {
