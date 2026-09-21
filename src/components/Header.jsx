@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Github, Linkedin, Menu, X } from 'lucide-react';
 
-const navItems = ['home', 'about', 'projects', 'contact'];
+const navItems = ['home', 'about', 'experience', 'projects', 'contact'];
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
