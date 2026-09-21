@@ -43,7 +43,7 @@ const Hero = () => {
         <div className="hero-main">
           <span className="hero-badge font-mono">
             <span className="hero-dot" />
-            Available for full-time & freelance
+            Open to SDE roles · Full-time & freelance
           </span>
 
           <h1 className="hero-title font-display">
@@ -52,9 +52,10 @@ const Hero = () => {
           </h1>
 
           <p className="hero-lead text-soft">
-            Backend Developer Intern at Zorvyn FinTech — I build secure REST APIs, scalable
-            service modules, and AI-powered applications with the MERN stack, LangChain, RAG,
-            PostgreSQL, Redis, and AWS.
+            Software engineer building backend systems and REST APIs — recently at
+            AfterQuery Experts and the Handshake AI Fellowship, after shipping AI-powered
+            full-stack products at Creative Business Labs. I work across Java, Spring Boot,
+            the MERN stack, Kafka, and cloud/microservices, and I’m open to SDE roles.
           </p>
 
           <div className="hero-actions">
@@ -105,6 +106,11 @@ const Hero = () => {
                 <p className="hero-card-role text-muted">Software Engineer · Backend & Full-Stack</p>
               </div>
             </div>
+
+            <p className="hero-card-status">
+              <span className="hero-dot" aria-hidden="true" />
+              <span className="text-soft">Open to SDE roles · Software Engineer</span>
+            </p>
 
             <p className="hero-card-meta text-muted">
               <MapPin className="w-4 h-4" aria-hidden="true" />
@@ -286,12 +292,20 @@ const Hero = () => {
         .hero-card-id { min-width: 0; }
         .hero-card-name { font-size: 1.15rem; font-weight: 700; color: var(--text); line-height: 1.2; }
         .hero-card-role { font-size: 0.8rem; margin-top: 0.2rem; }
+        .hero-card-status {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-size: 0.82rem;
+          font-weight: 500;
+          margin: 0.9rem 0 0.5rem;
+        }
         .hero-card-meta {
           display: flex;
           align-items: center;
           gap: 0.4rem;
           font-size: 0.82rem;
-          margin: 1rem 0 1.25rem;
+          margin: 0 0 1.25rem;
         }
         .hero-linkedin-btn {
           width: 100%;
