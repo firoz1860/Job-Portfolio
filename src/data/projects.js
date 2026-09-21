@@ -147,6 +147,7 @@ const projects = [
     "desc": "Video streaming platform with uploads, playback, subscriptions, and user channels.",
     "link": "https://github.com/firoz1860/VideoTube",
     "demo": "https://vidtubestream.vercel.app/",
+    "highlight": true,
     "tech": [
       "React",
       "TypeScript",

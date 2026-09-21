@@ -12,6 +12,7 @@ const HIGHLIGHT_ORDER = [
   "ai-resume-job-assistant",
   "tradeflow",
   "finance-dashboard-frontend",
+  "VideoTube",
 ];
 
 const filters = [
