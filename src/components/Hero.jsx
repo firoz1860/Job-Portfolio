@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail, Download, FileText, MapPin, Briefcase } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail, Download, FileText, MapPin, Briefcase, Eye } from 'lucide-react';
 
 const scrollTo = (id) => {
   const section = document.getElementById(id);
@@ -143,18 +143,33 @@ const Hero = () => {
               </p>
               <div className="hero-resume-list">
                 {resumes.map((r) => (
-                  <a
-                    key={r.id}
-                    href={r.file}
-                    download={r.download}
-                    className="hero-resume-btn"
-                  >
+                  <div key={r.id} className="hero-resume-item">
                     <span className="hero-resume-btn-text">
                       <span className="hero-resume-btn-label text-app">{r.label}</span>
                       <span className="hero-resume-btn-hint text-muted">{r.hint}</span>
                     </span>
-                    <Download className="w-4 h-4 hero-resume-btn-icon" aria-hidden="true" />
-                  </a>
+                    <span className="hero-resume-actions">
+                      <a
+                        href={r.file}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hero-resume-act"
+                        aria-label={`View ${r.label} résumé`}
+                      >
+                        <Eye className="w-4 h-4" aria-hidden="true" />
+                        View
+                      </a>
+                      <a
+                        href={r.file}
+                        download={r.download}
+                        className="hero-resume-act hero-resume-act--dl"
+                        aria-label={`Download ${r.label} résumé`}
+                      >
+                        <Download className="w-4 h-4" aria-hidden="true" />
+                        <span className="hero-resume-act-label">Download</span>
+                      </a>
+                    </span>
+                  </div>
                 ))}
               </div>
             </div>
@@ -384,31 +399,46 @@ const Hero = () => {
           flex-direction: column;
           gap: 0.6rem;
         }
-        .hero-resume-btn {
+        .hero-resume-item {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 0.75rem;
-          padding: 0.75rem 1rem;
+          gap: 0.6rem;
+          padding: 0.7rem 0.85rem;
           border-radius: 14px;
           border: 1px solid var(--border);
           background: var(--surface);
-          text-decoration: none;
-          transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
         }
-        .hero-resume-btn:hover {
-          transform: translateY(-2px);
-          border-color: var(--accent);
-          background: var(--surface-strong);
-        }
-        .hero-resume-btn:focus-visible {
-          outline: none;
-          box-shadow: 0 0 0 3px var(--ring);
-        }
-        .hero-resume-btn-text { display: flex; flex-direction: column; gap: 0.1rem; }
+        .hero-resume-btn-text { display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
         .hero-resume-btn-label { font-size: 0.92rem; font-weight: 600; }
         .hero-resume-btn-hint { font-size: 0.74rem; }
-        .hero-resume-btn-icon { color: var(--accent); flex-shrink: 0; }
+        .hero-resume-actions { display: inline-flex; gap: 0.4rem; flex-shrink: 0; }
+        .hero-resume-act {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.3rem;
+          padding: 0.4rem 0.65rem;
+          border-radius: 999px;
+          font-size: 0.76rem;
+          font-weight: 600;
+          text-decoration: none;
+          color: var(--text-soft);
+          background: var(--surface-strong);
+          border: 1px solid var(--border);
+          transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+        }
+        .hero-resume-act:hover { transform: translateY(-1px); color: var(--text); border-color: var(--accent); }
+        .hero-resume-act:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
+        .hero-resume-act--dl {
+          color: #05070d;
+          background: var(--grad);
+          border-color: transparent;
+        }
+        .hero-resume-act--dl:hover { color: #05070d; }
+
+        @media (max-width: 380px) {
+          .hero-resume-act-label { display: none; }
+        }
 
         /* ===== Employment card ===== */
         .hero-jobs { padding: 1.35rem 1.5rem; }
