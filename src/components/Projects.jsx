@@ -625,6 +625,8 @@ const Projects = () => {
           transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
           transform-style: preserve-3d;
           outline: none;
+          /* Let the browser own vertical scroll; we handle horizontal swipes. */
+          touch-action: pan-y;
         }
         .pj-flip.is-flipped .pj-inner {
           transform: rotateY(180deg);
