@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail, Download, FileText, MapPin, Briefcase, Eye } from 'lucide-react';
 
 const scrollTo = (id) => {
   const section = document.getElementById(id);
@@ -14,64 +14,206 @@ const stats = [
 
 const stack = ['React', 'Node.js', 'TypeScript', 'MongoDB', 'PostgreSQL', 'LangChain', 'AWS', 'Docker'];
 
+const LINKEDIN_URL = 'https://www.linkedin.com/in/firoz-ahmad-020166251';
+const base = process.env.PUBLIC_URL || '';
+
+const resumes = [
+  {
+    id: 'global',
+    label: 'Global / Remote',
+    hint: 'International & remote roles',
+    file: `${base}/Firoz_Ahmad_Resume_Global.pdf`,
+    download: 'Firoz_Ahmad_Resume_Global.pdf',
+  },
+  {
+    id: 'india',
+    label: 'India',
+    hint: 'India-based roles',
+    file: `${base}/Firoz_Ahmad_Resume_India.pdf`,
+    download: 'Firoz_Ahmad_Resume_India.pdf',
+  },
+];
+
+const jobs = [
+  { company: 'AfterQuery Experts', role: 'Software Engineer', period: '2026' },
+  { company: 'Handshake AI Fellowship', role: 'Expert Contributor', period: '2026' },
+  { company: 'Creative Business Labs', role: 'Full Stack Developer', period: '2024–25' },
+];
+
+const liveWork = [
+  { name: 'Cope Ahead', tagline: 'Mental Wellness Platform', url: 'https://copeahead.com/' },
+  { name: 'Agency Connect Hub', tagline: 'Multi-tenant Agency Portal', url: 'https://agencyconnecthub.com/' },
+];
+
 const Hero = () => {
   return (
     <section id="home" className="hero aurora">
       <div className="grid-texture hero-grid" aria-hidden="true" />
 
       <div className="hero-inner">
-        <span className="hero-badge font-mono">
-          <span className="hero-dot" />
-          Available for full-time & freelance
-        </span>
+        <div className="hero-main">
+          <span className="hero-badge font-mono">
+            <span className="hero-dot" />
+            Open to SDE roles · Full-time & freelance
+          </span>
 
-        <h1 className="hero-title font-display">
-          <span className="hero-title-line">Hi, I’m Firoz Ahmad</span>
-          <span className="grad-text animate-gradient">Backend &amp; AI-focused Full Stack Developer</span>
-        </h1>
+          <h1 className="hero-title font-display">
+            <span className="hero-title-line">Hi, I’m Firoz Ahmad</span>
+            <span className="grad-text animate-gradient">Backend &amp; AI-focused Full Stack Developer</span>
+          </h1>
 
-        <p className="hero-lead text-soft">
-          Backend Developer Intern at Zorvyn FinTech — I build secure REST APIs, scalable
-          service modules, and AI-powered applications with the MERN stack, LangChain, RAG,
-          PostgreSQL, Redis, and AWS.
-        </p>
+          <p className="hero-lead text-soft">
+            Software engineer building backend systems and REST APIs — recently at
+            AfterQuery Experts and the Handshake AI Fellowship, after shipping AI-powered
+            full-stack products at Creative Business Labs. I work across Java, Spring Boot,
+            the MERN stack, Kafka, and cloud/microservices, and I’m open to SDE roles.
+          </p>
 
-        <div className="hero-actions">
-          <button type="button" className="btn btn-primary" onClick={() => scrollTo('projects')}>
-            View my work
-            <ArrowUpRight className="w-4 h-4" />
-          </button>
-          <button type="button" className="btn btn-ghost" onClick={() => scrollTo('contact')}>
-            Get in touch
-          </button>
-          <div className="hero-socials">
-            <a href="https://github.com/firoz1860" target="_blank" rel="noopener noreferrer" className="hero-social" aria-label="GitHub">
-              <Github className="w-5 h-5" />
-            </a>
-            <a href="https://www.linkedin.com/in/firoz-ahmad-020166251" target="_blank" rel="noopener noreferrer" className="hero-social" aria-label="LinkedIn">
-              <Linkedin className="w-5 h-5" />
-            </a>
-            <a href="mailto:firozahmed709p@gmail.com" className="hero-social" aria-label="Email">
-              <Mail className="w-5 h-5" />
-            </a>
+          <div className="hero-actions">
+            <button type="button" className="btn btn-primary" onClick={() => scrollTo('projects')}>
+              View my work
+              <ArrowUpRight className="w-4 h-4" />
+            </button>
+            <button type="button" className="btn btn-ghost" onClick={() => scrollTo('contact')}>
+              Get in touch
+            </button>
+            <div className="hero-socials">
+              <a href="https://github.com/firoz1860" target="_blank" rel="noopener noreferrer" className="hero-social" aria-label="GitHub">
+                <Github className="w-5 h-5" />
+              </a>
+              <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="hero-social" aria-label="LinkedIn">
+                <Linkedin className="w-5 h-5" />
+              </a>
+              <a href="mailto:firozahmed709p@gmail.com" className="hero-social" aria-label="Email">
+                <Mail className="w-5 h-5" />
+              </a>
+            </div>
+          </div>
+
+          <div className="hero-stats">
+            {stats.map((s) => (
+              <div key={s.label} className="hero-stat surface">
+                <p className="hero-stat-value grad-text font-display">{s.value}</p>
+                <p className="hero-stat-label text-muted">{s.label}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="hero-stack">
+            <span className="text-muted font-mono hero-stack-label">stack:</span>
+            {stack.map((t) => (
+              <span key={t} className="chip">{t}</span>
+            ))}
           </div>
         </div>
 
-        <div className="hero-stats">
-          {stats.map((s) => (
-            <div key={s.label} className="hero-stat surface">
-              <p className="hero-stat-value grad-text font-display">{s.value}</p>
-              <p className="hero-stat-label text-muted">{s.label}</p>
+        {/* Right side card — LinkedIn profile + résumé downloads */}
+        <aside className="hero-aside" aria-label="Profile and résumés">
+          <div className="hero-card card">
+            <div className="hero-card-top">
+              <div className="hero-avatar font-display" aria-hidden="true">FA</div>
+              <div className="hero-card-id">
+                <p className="hero-card-name font-display">Firoz Ahmad</p>
+                <p className="hero-card-role text-muted">Software Engineer · Backend & Full-Stack</p>
+              </div>
             </div>
-          ))}
-        </div>
 
-        <div className="hero-stack">
-          <span className="text-muted font-mono hero-stack-label">stack:</span>
-          {stack.map((t) => (
-            <span key={t} className="chip">{t}</span>
-          ))}
-        </div>
+            <p className="hero-card-status">
+              <span className="hero-dot" aria-hidden="true" />
+              <span className="text-soft">Open to SDE roles · Software Engineer</span>
+            </p>
+
+            <p className="hero-card-meta text-muted">
+              <MapPin className="w-4 h-4" aria-hidden="true" />
+              Delhi, India · Open to global remote
+            </p>
+
+            <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="btn btn-primary hero-linkedin-btn">
+              <Linkedin className="w-4 h-4" />
+              Connect on LinkedIn
+              <ArrowUpRight className="w-4 h-4" />
+            </a>
+
+            <div className="hero-card-divider" role="separator" />
+
+            <div className="hero-resume">
+              <p className="hero-resume-title font-mono text-muted">
+                <FileText className="w-4 h-4" aria-hidden="true" />
+                Download résumé
+              </p>
+              <div className="hero-resume-list">
+                {resumes.map((r) => (
+                  <div key={r.id} className="hero-resume-item">
+                    <span className="hero-resume-btn-text">
+                      <span className="hero-resume-btn-label text-app">{r.label}</span>
+                      <span className="hero-resume-btn-hint text-muted">{r.hint}</span>
+                    </span>
+                    <span className="hero-resume-actions">
+                      <a
+                        href={r.file}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hero-resume-act"
+                        aria-label={`View ${r.label} résumé`}
+                      >
+                        <Eye className="w-4 h-4" aria-hidden="true" />
+                        View
+                      </a>
+                      <a
+                        href={r.file}
+                        download={r.download}
+                        className="hero-resume-act hero-resume-act--dl"
+                        aria-label={`Download ${r.label} résumé`}
+                      >
+                        <Download className="w-4 h-4" aria-hidden="true" />
+                        <span className="hero-resume-act-label">Download</span>
+                      </a>
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Employment card — visible to every visitor */}
+          <div className="hero-card hero-jobs card">
+            <p className="hero-jobs-title font-mono text-muted">
+              <Briefcase className="w-4 h-4" aria-hidden="true" />
+              Employment
+            </p>
+
+            <ul className="hero-jobs-list">
+              {jobs.map((j) => (
+                <li key={j.company} className="hero-job">
+                  <span className="hero-job-co text-app">{j.company}</span>
+                  <span className="hero-job-meta text-muted">{j.role} · {j.period}</span>
+                </li>
+              ))}
+            </ul>
+
+            <p className="hero-jobs-sub font-mono text-muted">Live work</p>
+            <div className="hero-jobs-links">
+              {liveWork.map((w) => (
+                <a
+                  key={w.url}
+                  href={w.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hero-job-link"
+                  title={w.tagline}
+                >
+                  <span className="hero-job-link-name text-app">{w.name}</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 hero-job-link-icon" aria-hidden="true" />
+                </a>
+              ))}
+            </div>
+
+            <button type="button" className="hero-jobs-all font-mono" onClick={() => scrollTo('experience')}>
+              View full timeline
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </aside>
       </div>
 
       <button type="button" className="hero-scroll text-muted" onClick={() => scrollTo('about')} aria-label="Scroll to about">
@@ -97,10 +239,15 @@ const Hero = () => {
         .hero-inner {
           position: relative;
           z-index: 1;
-          max-width: 1000px;
+          max-width: 1200px;
           margin: 0 auto;
           width: 100%;
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 2.5rem;
+          align-items: center;
         }
+        .hero-main { min-width: 0; }
         .hero-badge {
           display: inline-flex;
           align-items: center;
@@ -174,6 +321,200 @@ const Hero = () => {
         }
         .hero-stack-label { font-size: 0.8rem; margin-right: 0.25rem; }
 
+        /* ===== Right side card ===== */
+        .hero-aside {
+          justify-self: center;
+          width: 100%;
+          max-width: 380px;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        }
+        .hero-card {
+          padding: 1.5rem;
+          border-radius: 20px;
+          background: var(--card);
+          border: 1px solid var(--border-strong);
+          box-shadow: var(--shadow);
+        }
+        .hero-card:hover { transform: none; }
+        .hero-card-top {
+          display: flex;
+          align-items: center;
+          gap: 0.9rem;
+        }
+        .hero-avatar {
+          flex-shrink: 0;
+          width: 3.25rem;
+          height: 3.25rem;
+          border-radius: 999px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 800;
+          font-size: 1.1rem;
+          color: #05070d;
+          background: var(--grad);
+          box-shadow: 0 10px 24px -12px var(--accent);
+        }
+        .hero-card-id { min-width: 0; }
+        .hero-card-name { font-size: 1.15rem; font-weight: 700; color: var(--text); line-height: 1.2; }
+        .hero-card-role { font-size: 0.8rem; margin-top: 0.2rem; }
+        .hero-card-status {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-size: 0.82rem;
+          font-weight: 500;
+          margin: 0.9rem 0 0.5rem;
+        }
+        .hero-card-meta {
+          display: flex;
+          align-items: center;
+          gap: 0.4rem;
+          font-size: 0.82rem;
+          margin: 0 0 1.25rem;
+        }
+        .hero-linkedin-btn {
+          width: 100%;
+          padding: 0.7rem 1.1rem;
+          font-size: 0.9rem;
+        }
+        .hero-card-divider {
+          height: 1px;
+          background: var(--border);
+          margin: 1.4rem 0;
+        }
+        .hero-resume-title {
+          display: flex;
+          align-items: center;
+          gap: 0.45rem;
+          font-size: 0.72rem;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          margin: 0 0 0.85rem;
+        }
+        .hero-resume-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0.6rem;
+        }
+        .hero-resume-item {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 0.6rem;
+          padding: 0.7rem 0.85rem;
+          border-radius: 14px;
+          border: 1px solid var(--border);
+          background: var(--surface);
+        }
+        .hero-resume-btn-text { display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
+        .hero-resume-btn-label { font-size: 0.92rem; font-weight: 600; }
+        .hero-resume-btn-hint { font-size: 0.74rem; }
+        .hero-resume-actions { display: inline-flex; gap: 0.4rem; flex-shrink: 0; }
+        .hero-resume-act {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.3rem;
+          padding: 0.4rem 0.65rem;
+          border-radius: 999px;
+          font-size: 0.76rem;
+          font-weight: 600;
+          text-decoration: none;
+          color: var(--text-soft);
+          background: var(--surface-strong);
+          border: 1px solid var(--border);
+          transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+        }
+        .hero-resume-act:hover { transform: translateY(-1px); color: var(--text); border-color: var(--accent); }
+        .hero-resume-act:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
+        .hero-resume-act--dl {
+          color: #05070d;
+          background: var(--grad);
+          border-color: transparent;
+        }
+        .hero-resume-act--dl:hover { color: #05070d; }
+
+        @media (max-width: 380px) {
+          .hero-resume-act-label { display: none; }
+        }
+
+        /* ===== Employment card ===== */
+        .hero-jobs { padding: 1.35rem 1.5rem; }
+        .hero-jobs:hover { transform: none; }
+        .hero-jobs-title {
+          display: flex;
+          align-items: center;
+          gap: 0.45rem;
+          font-size: 0.72rem;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          margin: 0 0 0.9rem;
+        }
+        .hero-jobs-list {
+          list-style: none;
+          margin: 0 0 1.1rem;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 0.7rem;
+        }
+        .hero-job {
+          display: flex;
+          flex-direction: column;
+          gap: 0.1rem;
+          padding-left: 0.85rem;
+          border-left: 2px solid var(--border-strong);
+        }
+        .hero-job-co { font-size: 0.9rem; font-weight: 600; line-height: 1.25; }
+        .hero-job-meta { font-size: 0.76rem; }
+        .hero-jobs-sub {
+          font-size: 0.68rem;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          margin: 0 0 0.6rem;
+        }
+        .hero-jobs-links {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          margin-bottom: 1rem;
+        }
+        .hero-job-link {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 0.6rem;
+          padding: 0.6rem 0.8rem;
+          border-radius: 12px;
+          border: 1px solid var(--border);
+          background: var(--surface);
+          text-decoration: none;
+          transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+        .hero-job-link:hover {
+          transform: translateY(-2px);
+          border-color: var(--accent);
+          background: var(--surface-strong);
+        }
+        .hero-job-link:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
+        .hero-job-link-name { font-size: 0.88rem; font-weight: 600; }
+        .hero-job-link-icon { color: var(--accent); flex-shrink: 0; }
+        .hero-jobs-all {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          background: none;
+          border: none;
+          padding: 0;
+          cursor: pointer;
+          color: var(--accent);
+          font-size: 0.78rem;
+          font-weight: 600;
+        }
+        .hero-jobs-all:hover { text-decoration: underline; }
+
         .hero-scroll {
           position: absolute;
           bottom: 1.75rem;
@@ -187,6 +528,14 @@ const Hero = () => {
           border: none;
           cursor: pointer;
           font-size: 0.72rem;
+        }
+
+        @media (min-width: 960px) {
+          .hero-inner {
+            grid-template-columns: minmax(0, 1fr) 360px;
+            gap: 3rem;
+          }
+          .hero-aside { justify-self: end; }
         }
 
         @media (max-width: 560px) {

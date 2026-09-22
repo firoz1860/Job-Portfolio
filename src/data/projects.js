@@ -2,11 +2,66 @@
 // Categories: fullstack | ai | backend | frontend | mobile
 const projects = [
   {
+    "title": "TradeFlow — Paper Trading Platform",
+    "repo": "tradeflow",
+    "desc": "Real-time paper-trading platform simulating an exchange: virtual USD/BTC/ETH, market & limit orders, live order matching, and risk validation.",
+    "link": "https://github.com/firoz1860/tradeflow",
+    "demo": "https://client-brown-psi-57.vercel.app",
+    "tech": [
+      "ASP.NET Core",
+      "React",
+      "PostgreSQL",
+      "Redis",
+      "SignalR"
+    ],
+    "category": "fullstack",
+    "language": "C#",
+    "featured": true,
+    "highlight": true,
+    "year": "2026"
+  },
+  {
+    "title": "SwarmSync — P2P File Sharing",
+    "repo": "SwarmSync",
+    "desc": "BitTorrent-inspired P2P file-sharing system: SHA-256 verified chunks, tracker & seeder, concurrent TCP transfers, failover, and resume-safe downloads.",
+    "link": "https://github.com/firoz1860/SwarmSync",
+    "demo": "",
+    "tech": [
+      "C++17",
+      "TCP Sockets",
+      "SHA-256",
+      "CMake",
+      "Docker"
+    ],
+    "category": "backend",
+    "language": "C++",
+    "featured": true,
+    "year": "2026"
+  },
+  {
+    "title": "LifeOps AI",
+    "repo": "lifeops-ai",
+    "desc": "User-scoped personal-operations MVP built as Java microservices: turns demo email/calendar fixtures into prioritized action cards with an append-only audit trail.",
+    "link": "https://github.com/firoz1860/lifeops-ai",
+    "demo": "",
+    "tech": [
+      "Java 21",
+      "Spring Boot",
+      "Microservices",
+      "Docker"
+    ],
+    "category": "backend",
+    "language": "Java",
+    "featured": false,
+    "year": "2026"
+  },
+  {
     "title": "AI Resume & Job Assistant",
     "repo": "ai-resume-job-assistant",
     "desc": "AI assistant that tailors resumes and matches candidates to relevant jobs.",
     "link": "https://github.com/firoz1860/ai-resume-job-assistant",
     "demo": "https://ai-resume-job-assistant.vercel.app",
+    "highlight": true,
     "tech": [
       "JavaScript",
       "LLM",
@@ -38,7 +93,8 @@ const projects = [
     "repo": "DocOnGo-Frontend",
     "desc": "AI-assisted healthcare app connecting patients with doctors for on-the-go consultations.",
     "link": "https://github.com/firoz1860/DocOnGo-Frontend",
-    "demo": "https://docongoai.vercel.app/",
+    "demo": "https://docongo.vercel.app/",
+    "highlight": true,
     "tech": [
       "React",
       "Node.js",
@@ -91,6 +147,7 @@ const projects = [
     "desc": "Video streaming platform with uploads, playback, subscriptions, and user channels.",
     "link": "https://github.com/firoz1860/VideoTube",
     "demo": "https://vidtubestream.vercel.app/",
+    "highlight": true,
     "tech": [
       "React",
       "TypeScript",
@@ -108,6 +165,7 @@ const projects = [
     "desc": "Finance dashboard for expense tracking, transactions, and real-time insights with secure auth.",
     "link": "https://github.com/firoz1860/finance-dashboard-frontend",
     "demo": "https://zorvynflow23.vercel.app/",
+    "highlight": true,
     "tech": [
       "React",
       "Node.js",
@@ -339,6 +397,7 @@ const projects = [
     "desc": "Secure cloud file storage with uploads, folders, sharing, and access control.",
     "link": "https://github.com/firoz1860/drivevault",
     "demo": "https://drivevault-nine.vercel.app",
+    "highlight": true,
     "tech": [
       "React",
       "Node.js",

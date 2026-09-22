@@ -33,6 +33,16 @@ npm run build    # production build in /build
 npm test         # run the test suite
 ```
 
+## EmailJS configuration
+
+The contact form reads its EmailJS settings at build time. Copy `.env.example` to `.env.local` for local development, then provide the same values in your hosting provider's environment-variable settings:
+
+- `REACT_APP_EMAILJS_SERVICE_ID`
+- `REACT_APP_EMAILJS_TEMPLATE_ID`
+- `REACT_APP_EMAILJS_PUBLIC_KEY`
+
+For the deployed Vercel project, add these values under **Project Settings > Environment Variables** and redeploy. In EmailJS, ensure the selected template includes `{{name}}`, `{{email}}`, and `{{message}}` so each visitor's details appear in the message you receive.
+
 ## Project data
 
 `src/data/projects.js` is generated from my public GitHub repositories and then curated

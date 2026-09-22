@@ -3,6 +3,7 @@ import Header from './components/Header.jsx';
 import Hero from './components/Hero.jsx';
 
 const About = lazy(() => import('./components/About.jsx'));
+const Experience = lazy(() => import('./components/Experience.jsx'));
 const Projects = lazy(() => import('./components/Projects.jsx'));
 const Contact = lazy(() => import('./components/Contact.jsx'));
 const Footer = lazy(() => import('./components/Footer.jsx'));
@@ -15,6 +16,7 @@ function App() {
         <Hero />
         <Suspense fallback={<div style={{ minHeight: '60vh' }} aria-hidden="true" />}>
           <About />
+          <Experience />
           <Projects />
           <Contact />
         </Suspense>
