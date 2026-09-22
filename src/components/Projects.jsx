@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -74,12 +74,45 @@ const ProjectCard = memo(({ project, highlight = false }) => {
   const [flipped, setFlipped] = useState(false);
   const aboutLines = useMemo(() => getAboutLines(project), [project]);
 
-  const toggle = useCallback(() => setFlipped((v) => !v), []);
+  const touchStart = useRef(null);
+  const didSwipe = useRef(false);
+
   const onKeyDown = useCallback((e) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       setFlipped((v) => !v);
     }
+  }, []);
+
+  // Mobile/touch only: swipe left to reveal details, swipe right to hide.
+  // (Touch events never fire on mouse-only desktops, so this is phone-only.)
+  const onTouchStart = useCallback((e) => {
+    const t = e.touches[0];
+    touchStart.current = { x: t.clientX, y: t.clientY };
+    didSwipe.current = false;
+  }, []);
+
+  const onTouchEnd = useCallback((e) => {
+    if (!touchStart.current) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - touchStart.current.x;
+    const dy = t.clientY - touchStart.current.y;
+    touchStart.current = null;
+    // Treat as a horizontal swipe only when it's clearly sideways, so
+    // vertical page scrolling is never hijacked.
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      didSwipe.current = true;
+      setFlipped(dx < 0); // left => details, right => back
+    }
+  }, []);
+
+  const onClick = useCallback(() => {
+    // A swipe also fires a click; ignore that follow-up click once.
+    if (didSwipe.current) {
+      didSwipe.current = false;
+      return;
+    }
+    setFlipped((v) => !v);
   }, []);
 
   const faceClass = `pj-face card${highlight ? " pj-card--hl" : ""}`;
@@ -125,8 +158,10 @@ const ProjectCard = memo(({ project, highlight = false }) => {
             ? `Hide details for ${project.title}`
             : `Show details for ${project.title}`
         }
-        onClick={toggle}
+        onClick={onClick}
         onKeyDown={onKeyDown}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
       >
         {/* FRONT */}
         <div className={`${faceClass} pj-front`}>
@@ -152,7 +187,7 @@ const ProjectCard = memo(({ project, highlight = false }) => {
             )}
             <span className="pj-flip-hint">
               <Info className="w-3.5 h-3.5" />
-              Tap for details
+              Tap or swipe for details
             </span>
           </div>
 
