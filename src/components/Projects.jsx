@@ -1,5 +1,16 @@
-import React, { memo, useMemo, useState } from "react";
-import { ArrowUpRight, Calendar, Github, Search, Sparkles, Star } from "lucide-react";
+import React, { memo, useCallback, useMemo, useState } from "react";
+import {
+  ArrowLeft,
+  ArrowUpRight,
+  Calendar,
+  Github,
+  Info,
+  Layers,
+  RotateCw,
+  Search,
+  Sparkles,
+  Star,
+} from "lucide-react";
 import projects from "../data/projects";
 import ProjectCover from "./ProjectCover.jsx";
 
@@ -22,70 +33,169 @@ const categoryLabel = {
   mobile: "Mobile",
 };
 
-const ProjectCard = memo(({ project }) => (
-  <article className="pj-card card">
-    <div className="pj-cover">
-      <ProjectCover project={project} />
-      {project.featured && (
-        <span className="pj-featured">
-          <Star className="w-3 h-3" fill="currentColor" />
-          Featured
-        </span>
+// Build at least 5 lines of "about" info for a project's back face.
+// Prefers an author-written `highlights` array (>= 5 items) when present,
+// otherwise derives honest, specific lines from the project's real fields —
+// no invented features that could mislead a reviewer.
+const getAboutLines = (p) => {
+  if (Array.isArray(p.highlights) && p.highlights.length >= 5) {
+    return p.highlights;
+  }
+  return [
+    p.desc,
+    `Type: ${categoryLabel[p.category]} project, built primarily in ${p.language}.`,
+    `Tech stack: ${p.tech.join(", ")}.`,
+    p.demo
+      ? "Deployed with a live demo you can open and try in the browser."
+      : "Source-available on GitHub — clone it and run locally to explore.",
+    `Shipped in ${p.year}${
+      p.featured ? " and featured as one of my strongest projects." : "."
+    }`,
+  ];
+};
+
+// Stop the card from flipping when an actual link inside it is clicked.
+const stopFlip = (e) => e.stopPropagation();
+
+const ProjectCard = memo(({ project }) => {
+  const [flipped, setFlipped] = useState(false);
+  const aboutLines = useMemo(() => getAboutLines(project), [project]);
+
+  const toggle = useCallback(() => setFlipped((v) => !v), []);
+  const onKeyDown = useCallback((e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      setFlipped((v) => !v);
+    }
+  }, []);
+
+  const links = (
+    <div className="pj-links">
+      <a
+        href={project.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="pj-link"
+        onClick={stopFlip}
+        aria-label={`${project.title} source code on GitHub`}
+      >
+        <Github className="w-4 h-4" />
+        Code
+      </a>
+      {project.demo && (
+        <a
+          href={project.demo}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="pj-link pj-link--demo"
+          onClick={stopFlip}
+          aria-label={`${project.title} live demo`}
+        >
+          Live
+          <ArrowUpRight className="w-4 h-4" />
+        </a>
       )}
     </div>
+  );
 
-    <div className="pj-body">
-      <div className="pj-top">
-        <h3 className="pj-title">{project.title}</h3>
-        <span className="pj-meta">
-          <Calendar className="w-3.5 h-3.5" />
-          {project.year}
-        </span>
-      </div>
+  return (
+    <article className={`pj-flip ${flipped ? "is-flipped" : ""}`}>
+      <div
+        className="pj-inner"
+        role="button"
+        tabIndex={0}
+        aria-pressed={flipped}
+        aria-label={
+          flipped
+            ? `Hide details for ${project.title}`
+            : `Show details for ${project.title}`
+        }
+        onClick={toggle}
+        onKeyDown={onKeyDown}
+      >
+        {/* FRONT */}
+        <div className="pj-face pj-front card">
+          <div className="pj-cover">
+            <ProjectCover project={project} />
+            {project.featured && (
+              <span className="pj-featured">
+                <Star className="w-3 h-3" fill="currentColor" />
+                Featured
+              </span>
+            )}
+            <span className="pj-flip-hint">
+              <Info className="w-3.5 h-3.5" />
+              Tap for details
+            </span>
+          </div>
 
-      <p className="pj-desc">{project.desc}</p>
+          <div className="pj-body">
+            <div className="pj-top">
+              <h3 className="pj-title">{project.title}</h3>
+              <span className="pj-meta">
+                <Calendar className="w-3.5 h-3.5" />
+                {project.year}
+              </span>
+            </div>
 
-      <div className="pj-tech">
-        {project.tech.slice(0, 4).map((t) => (
-          <span key={t} className="chip">{t}</span>
-        ))}
-        {project.tech.length > 4 && (
-          <span className="chip">+{project.tech.length - 4}</span>
-        )}
-      </div>
+            <p className="pj-desc">{project.desc}</p>
 
-      <div className="pj-foot">
-        <span className={`pj-cat pj-cat--${project.category}`}>
-          {categoryLabel[project.category]}
-        </span>
-        <div className="pj-links">
-          <a
-            href={project.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="pj-link"
-            aria-label={`${project.title} source code on GitHub`}
-          >
-            <Github className="w-4 h-4" />
-            Code
-          </a>
-          {project.demo && (
-            <a
-              href={project.demo}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="pj-link pj-link--demo"
-              aria-label={`${project.title} live demo`}
+            <div className="pj-tech">
+              {project.tech.slice(0, 4).map((t) => (
+                <span key={t} className="chip">{t}</span>
+              ))}
+              {project.tech.length > 4 && (
+                <span className="chip">+{project.tech.length - 4}</span>
+              )}
+            </div>
+
+            <div className="pj-foot">
+              <span className={`pj-cat pj-cat--${project.category}`}>
+                {categoryLabel[project.category]}
+              </span>
+              {links}
+            </div>
+          </div>
+        </div>
+
+        {/* BACK */}
+        <div className="pj-face pj-back card">
+          <div className="pj-back-head">
+            <span className="pj-back-eyebrow">
+              <Layers className="w-3.5 h-3.5" />
+              About this project
+            </span>
+            <h3 className="pj-title">{project.title}</h3>
+          </div>
+
+          <ul className="pj-about">
+            {aboutLines.map((line, i) => (
+              <li key={i}>{line}</li>
+            ))}
+          </ul>
+
+          <div className="pj-foot">
+            <button
+              type="button"
+              className="pj-back-btn"
+              onClick={(e) => {
+                stopFlip(e);
+                setFlipped(false);
+              }}
+              aria-label={`Back to ${project.title} card`}
             >
-              Live
-              <ArrowUpRight className="w-4 h-4" />
-            </a>
-          )}
+              <ArrowLeft className="w-3.5 h-3.5" />
+              Back
+            </button>
+            {links}
+          </div>
+
+          <RotateCw className="pj-back-watermark" aria-hidden="true" />
         </div>
       </div>
-    </div>
-  </article>
-));
+    </article>
+  );
+});
 
 const Projects = () => {
   const [filter, setFilter] = useState("all");
@@ -275,14 +385,143 @@ const Projects = () => {
           gap: 1.25rem;
         }
 
-        .pj-card {
+        /* ---- Flip card ---- */
+        .pj-flip {
+          position: relative;
+          height: 430px;
+          perspective: 1400px;
+        }
+        .pj-inner {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          border-radius: 18px;
+          cursor: pointer;
+          transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+          transform-style: preserve-3d;
+          outline: none;
+        }
+        .pj-flip.is-flipped .pj-inner {
+          transform: rotateY(180deg);
+        }
+        .pj-inner:focus-visible {
+          box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+        }
+        .pj-face {
+          position: absolute;
+          inset: 0;
           display: flex;
           flex-direction: column;
           overflow: hidden;
+          -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
         }
+        .pj-back {
+          transform: rotateY(180deg);
+          padding: 1.15rem 1.2rem 1.1rem;
+          gap: 0.85rem;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .pj-inner { transition: none; }
+        }
+
         .pj-cover {
           position: relative;
           height: 140px;
+        }
+        .pj-flip-hint {
+          position: absolute;
+          bottom: 0.7rem;
+          left: 0.7rem;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.3rem;
+          padding: 0.26rem 0.55rem;
+          border-radius: 999px;
+          font-size: 0.68rem;
+          font-weight: 600;
+          color: #fff;
+          background: rgba(0, 0, 0, 0.42);
+          border: 1px solid rgba(255, 255, 255, 0.28);
+          backdrop-filter: blur(4px);
+          opacity: 0;
+          transform: translateY(4px);
+          transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .pj-inner:hover .pj-flip-hint,
+        .pj-inner:focus-visible .pj-flip-hint {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        /* ---- Back face ---- */
+        .pj-back-head {
+          display: flex;
+          flex-direction: column;
+          gap: 0.4rem;
+        }
+        .pj-back-eyebrow {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 0.7rem;
+          font-weight: 600;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+          color: var(--accent);
+        }
+        .pj-about {
+          flex: 1;
+          margin: 0;
+          padding: 0;
+          list-style: none;
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          overflow-y: auto;
+          color: var(--text-soft);
+          font-size: 0.83rem;
+          line-height: 1.5;
+        }
+        .pj-about li {
+          position: relative;
+          padding-left: 1rem;
+        }
+        .pj-about li::before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 0.55em;
+          width: 6px;
+          height: 6px;
+          border-radius: 999px;
+          background: var(--grad);
+        }
+        .pj-back-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.3rem;
+          padding: 0.4rem 0.7rem;
+          border-radius: 999px;
+          font-size: 0.78rem;
+          font-weight: 600;
+          color: var(--text-soft);
+          background: var(--surface-strong);
+          border: 1px solid var(--border);
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+        .pj-back-btn:hover { color: var(--text); border-color: var(--accent); }
+        .pj-back-watermark {
+          position: absolute;
+          right: -14px;
+          bottom: -14px;
+          width: 96px;
+          height: 96px;
+          color: var(--text);
+          opacity: 0.05;
+          pointer-events: none;
         }
         .pj-featured {
           position: absolute;
